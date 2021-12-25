@@ -8,6 +8,8 @@ class Diagnostic:
         self.storage = storage
         self.display = display
 
+        self.display.show_text("DIAG")
+
         self.midi.observe_midi_messages(self.on_midi_message)
 
     def on_midi_message(self, message):

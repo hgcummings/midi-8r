@@ -7,6 +7,9 @@ class Display:
     def show_patch(self, patch):
         self.pixel_display.show_pixels(render_line("P" + str(patch), (255,255,255)))
 
+    def show_text(self, text):
+        self.pixel_display.show_pixels(render_line(text, (255, 255, 255)))
+
 class ConsoleDisplay:
     def show_pixels(self, pixels):
         for row in pixels:
