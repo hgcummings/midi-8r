@@ -34,7 +34,11 @@ class Application:
     def show_pixels(self, pixels):
         self.display.delete("all")
         for y, row in enumerate(pixels):
+            if (y > 9):
+                break
             for x, pixel in enumerate(row):
+                if (x > 15):
+                    break
                 self.display.create_rectangle(2 + scale_x * (1+x), scale_y * (1+y), scale_x * (2+x) - 4, scale_y * (2+y) - 2, fill=rgb_color(pixel))
 
     def send_midi_in(self):
