@@ -21,7 +21,7 @@ def render_line(text, colour):
         else:
             print("Missing character " + text_char)
 
-        blank_row = [[0] for _ in glyph["pixels"][glyph["offset"]]]
+        blank_row = [[0] for _ in glyph["pixels"][0]]
         new_character = [blank_row for _ in range(glyph["offset"])]        
         for row in glyph["pixels"]:
             new_character.append(row)
