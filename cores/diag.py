@@ -1,3 +1,6 @@
+import adafruit_midi
+from adafruit_midi.program_change import ProgramChange
+
 class Diagnostic:
     def __init__(self, midi, control, storage, display) -> None:
         self.midi = midi
@@ -5,7 +8,8 @@ class Diagnostic:
         self.storage = storage
         self.display = display
 
-        self.midi.observe_prog_change(self.on_prog_change)
+        self.midi.observe_midi_messages(self.on_midi_message)
 
-    def on_prog_change(self, value):
-        self.display.show_preset(value)
+    def on_midi_message(self, message):
+        if (isinstance(message, ProgramChange)):
+            self.display.show_patch(message.patch)
