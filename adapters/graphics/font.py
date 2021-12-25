@@ -14,12 +14,12 @@ gap = [[0]]
 def render_line(text, colour):
     characters = []
     max_height = 0
-    for i, letter in enumerate(text):
+    for i, text_char in enumerate(text):
         glyph = font["glyphs"][""]
-        if (font["glyphs"][letter]):
-            glyph = font["glyphs"][letter]
+        if (font["glyphs"][text_char]):
+            glyph = font["glyphs"][text_char]
         else:
-            print("Missing letter " + letter)
+            print("Missing character " + text_char)
 
         blank_row = [[0] for _ in glyph["pixels"][glyph["offset"]]]
         new_character = [blank_row for _ in range(glyph["offset"])]        
