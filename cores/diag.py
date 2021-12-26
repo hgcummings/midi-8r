@@ -10,8 +10,9 @@ class Diagnostic:
 
         self.display.show_text("DIAG")
 
-        self.midi.observe_midi_messages(self.on_midi_message)
+        self.midi.observe_messages(self.on_midi_message)
 
     def on_midi_message(self, message):
         if (isinstance(message, ProgramChange)):
             self.display.show_patch(message.patch)
+            self.midi.send_message(ProgramChange(message.patch))
