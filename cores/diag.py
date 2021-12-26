@@ -19,7 +19,7 @@ class Diagnostic:
 
     def on_midi_message(self, message):
         if (isinstance(message, ProgramChange)):
-            self.update_patches(message.patch, message.patch)
+            self.update_patches(message.patch, self.storage.get_preset(message.patch))
 
     def update_patches(self, input_patch, output_patch):
         changed = False
@@ -43,3 +43,5 @@ class Diagnostic:
                 self.update_patches(self.input_patch, (self.output_patch + 1))
             elif (event == EncoderEvent.DECREMENT):
                 self.update_patches(self.input_patch, (self.output_patch - 1))
+            elif (event == EncoderEvent.PUSH):
+                self.storage.set_preset(self.input_patch, self.output_patch)
