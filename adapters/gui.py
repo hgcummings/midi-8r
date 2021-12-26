@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter.constants import DISABLED, NORMAL
 from adafruit_midi.program_change import ProgramChange
+from .control import EncoderEvent
+from functools import partial
 
 from adapters import display
 
@@ -25,7 +27,18 @@ class Application:
         pedal.grid(column=0, columnspan=3, row=0)
 
         self.display = tk.Canvas(pedal, width=scale_x*(width+2), height=scale_y*(height+2), background="black")
-        self.display.place(relx = 0.5, rely = 0.1, anchor = 'n')
+        self.display.place(relx = 0.5, rely = 0.1, anchor = "n")
+
+        encoder_frame = tk.Frame(pedal)
+        encoder_decr = tk.Button(encoder_frame, text="<", command=partial(self.send_encoder_event, EncoderEvent.DECREMENT))
+        encoder_decr.grid(column=0, row=0)
+        encoder = tk.Button(encoder_frame, text="O")
+        encoder.bind("<Button-1>", partial(self.send_encoder_event, EncoderEvent.PUSH))
+        encoder.bind("<ButtonRelease-1>", partial(self.send_encoder_event, EncoderEvent.RELEASE))
+        encoder.grid(column=1, row=0)
+        encoder_decr = tk.Button(encoder_frame, text=">", command=partial(self.send_encoder_event, EncoderEvent.INCREMENT))
+        encoder_decr.grid(column=2, row=0)
+        encoder_frame.place(relx = 0.5, rely = 0.5, anchor = "center")
 
         midi_out_label = tk.Label(self.app, text="MIDI out")
         midi_out_label.grid(column=0, row=1)
@@ -42,16 +55,7 @@ class Application:
         midi_in_send.grid(column = 2, row = 3)
 
         self.midi_observer = None
-
-    # MIDI implementation
-    def observe_messages(self, observer):
-        self.midi_observer = observer
-
-    def send_message(self, message):
-        if (isinstance(message, ProgramChange)):
-            self.midi_out_text.set("P" + str(message.patch))
-        else:
-            self.midi_out_text.set("[msg]")
+        self.encoder_observer = None
 
     # Display implementation
     def show_pixels(self, pixels):
@@ -63,6 +67,20 @@ class Application:
                 if (x > 15):
                     break
                 self.display.create_rectangle(2 + scale_x * (1+x), scale_y * (1+y), scale_x * (2+x) - 4, scale_y * (2+y) - 2, fill=rgb_color(pixel))
+
+    # Control implementation
+    def observe_encoder(self, observer):
+        self.encoder_observer = observer
+
+    # MIDI implementation
+    def observe_messages(self, observer):
+        self.midi_observer = observer
+
+    def send_message(self, message):
+        if (isinstance(message, ProgramChange)):
+            self.midi_out_text.set("P" + str(message.patch))
+        else:
+            self.midi_out_text.set("[msg]")
 
     # UI
     def show_ui(self):
@@ -76,3 +94,7 @@ class Application:
                 self.midi_observer(ProgramChange(patch))
         else:
             self.midi_in.configure(background="red")
+
+    def send_encoder_event(self, event, _=None):
+        if (self.encoder_observer):
+            self.encoder_observer(event)
