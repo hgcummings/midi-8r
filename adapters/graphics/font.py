@@ -6,7 +6,7 @@ from functools import reduce
 script_dir = os.path.dirname(__file__)
 font_path = os.path.join(script_dir, "font.json")
 
-with open(font_path) as f:
+with open(font_path, encoding="utf8") as f:
     font = json.load(f)
 
 gap = [[0]]

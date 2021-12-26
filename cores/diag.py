@@ -14,5 +14,6 @@ class Diagnostic:
 
     def on_midi_message(self, message):
         if (isinstance(message, ProgramChange)):
-            self.display.show_patch(message.patch)
-            self.midi.send_message(ProgramChange(message.patch))
+            patch_out = message.patch
+            self.display.show_patches(message.patch, patch_out)
+            self.midi.send_message(ProgramChange(patch_out))
