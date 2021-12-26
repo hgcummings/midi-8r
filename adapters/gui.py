@@ -2,6 +2,13 @@ import tkinter as tk
 from tkinter.constants import DISABLED, NORMAL
 from adafruit_midi.program_change import ProgramChange
 
+from adapters import display
+
+# Pedal dimensions in mm: 70x110
+# Pedal dimensions in px: 308x484
+# Pixels per mm: 4.4
+
+# Display dimensions
 width = 16
 height = 10
 scale_x = 15
@@ -14,8 +21,11 @@ class Application:
     def __init__(self):
         self.app = tk.Tk()
 
-        self.display = tk.Canvas(self.app, width=scale_x*(width+2), height=scale_y*(height+2), background="black")
-        self.display.grid(column = 0, columnspan=3, row=0)
+        pedal = tk.Frame(self.app, width=308, height=484, background="black")
+        pedal.grid(column=0, columnspan=3, row=0)
+
+        self.display = tk.Canvas(pedal, width=scale_x*(width+2), height=scale_y*(height+2), background="black")
+        self.display.place(relx = 0.5, rely = 0.1, anchor = 'n')
 
         midi_out_label = tk.Label(self.app, text="MIDI out")
         midi_out_label.grid(column=0, row=1)
