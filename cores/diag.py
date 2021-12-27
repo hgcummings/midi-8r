@@ -1,4 +1,5 @@
 from adafruit_midi.program_change import ProgramChange
+from adapters import storage
 from adapters.control import EncoderEvent
 from config import *
 
@@ -35,7 +36,10 @@ class Diagnostic:
             changed = True
 
         if changed:
-            self.display.show_patches(self.input_patch, self.output_patch)
+            self.display.show_patches(
+                self.input_patch,
+                self.output_patch,
+                self.output_patch == self.storage.get_preset(self.input_patch))
 
     def on_encoder_event(self, event):
         if (self.output_patch != None):
@@ -45,3 +49,4 @@ class Diagnostic:
                 self.update_patches(self.input_patch, (self.output_patch - 1))
             elif (event == EncoderEvent.PUSH):
                 self.storage.set_preset(self.input_patch, self.output_patch)
+                self.display.show_patches(self.input_patch, self.output_patch, True)
