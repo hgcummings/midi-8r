@@ -1,10 +1,8 @@
 import tkinter as tk
-from tkinter.constants import DISABLED, NORMAL
+from tkinter.constants import DISABLED
 from adafruit_midi.program_change import ProgramChange
-from .control import EncoderEvent
+from adapters.control import EncoderEvent
 from functools import partial
-
-from adapters import display
 
 # Pedal dimensions in mm: 70x110
 # Pedal dimensions in px: 308x484

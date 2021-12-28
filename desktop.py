@@ -1,5 +1,5 @@
 from cores.diag import Diagnostic
-from adapters.gui import Application
+from ports.gui import Application
 from adapters.storage.file import FileStorage
 from adapters.display import Display
 
