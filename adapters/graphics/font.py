@@ -1,10 +1,6 @@
 import json
-import os
 
-from functools import reduce
-
-script_dir = os.path.dirname(__file__)
-font_path = os.path.join(script_dir, "font.json")
+font_path = __file__.replace(".py", ".json")
 
 with open(font_path, encoding="utf8") as f:
     font = json.load(f)
@@ -36,5 +32,9 @@ def render_line(text, colour):
             row = blank_row if i >= len(char) else char[i]
             line[i] += [colour if p == 1 else (0,0,0) for p in row]
         return line
+
+    line = [[] for _ in range(max_height)]
+    for character in characters:
+        append_char(line, character)
         
-    return reduce(append_char, characters, [[] for _ in range(max_height)])
+    return line

@@ -1,7 +1,5 @@
-from enum import Enum, auto
-
-class EncoderEvent(Enum):
-    INCREMENT = auto(),
-    DECREMENT = auto(),
-    PUSH = auto(),
-    RELEASE = auto()
+class EncoderEvent:
+    INCREMENT = 1,
+    DECREMENT = -1,
+    PUSH = 2,
+    RELEASE = 0
