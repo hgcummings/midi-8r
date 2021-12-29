@@ -1,6 +1,4 @@
 from adafruit_midi.program_change import ProgramChange
-from adapters import storage
-from adapters.control import EncoderEvent
 from config import *
 
 class Diagnostic:
@@ -16,11 +14,14 @@ class Diagnostic:
         self.output_patch = None
         self.midi.observe_messages(self.on_midi_message)
 
-        self.control.observe_encoder(self.on_encoder_event)
+        self.control.observe_value(self.on_value_change)
+        self.control.observe_buttons(self.on_button_change)
 
     def on_midi_message(self, message):
         if (isinstance(message, ProgramChange)):
-            self.update_patches(message.patch, self.storage.get_preset(message.patch))
+            preset = self.storage.get_preset(message.patch)
+            self.update_patches(message.patch, preset)
+            self.control.set_value(preset)
 
     def update_patches(self, input_patch, output_patch):
         changed = False
@@ -41,12 +42,11 @@ class Diagnostic:
                 self.output_patch,
                 self.output_patch == self.storage.get_preset(self.input_patch))
 
-    def on_encoder_event(self, event):
+    def on_button_change(self, pressed):
+        if (pressed):
+            self.storage.set_preset(self.input_patch, self.output_patch)
+            self.display.show_patches(self.input_patch, self.output_patch, True)
+
+    def on_value_change(self, value):
         if (self.output_patch != None):
-            if (event == EncoderEvent.INCREMENT):
-                self.update_patches(self.input_patch, (self.output_patch + 1))
-            elif (event == EncoderEvent.DECREMENT):
-                self.update_patches(self.input_patch, (self.output_patch - 1))
-            elif (event == EncoderEvent.PUSH):
-                self.storage.set_preset(self.input_patch, self.output_patch)
-                self.display.show_patches(self.input_patch, self.output_patch, True)
+            self.update_patches(self.input_patch, value)

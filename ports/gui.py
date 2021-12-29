@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter.constants import DISABLED
 from adafruit_midi.program_change import ProgramChange
-from adapters.control import EncoderEvent
 from functools import partial
 
 # Pedal dimensions in mm: 70x110
@@ -28,13 +27,13 @@ class Application:
         self.display.place(relx = 0.5, rely = 0.1, anchor = "n")
 
         encoder_frame = tk.Frame(pedal)
-        encoder_decr = tk.Button(encoder_frame, text="<", command=partial(self.send_encoder_event, EncoderEvent.DECREMENT))
+        encoder_decr = tk.Button(encoder_frame, text="<", command=partial(self.change_value, -1))
         encoder_decr.grid(column=0, row=0)
         encoder = tk.Button(encoder_frame, text="O")
-        encoder.bind("<Button-1>", partial(self.send_encoder_event, EncoderEvent.PUSH))
-        encoder.bind("<ButtonRelease-1>", partial(self.send_encoder_event, EncoderEvent.RELEASE))
+        encoder.bind("<Button-1>", partial(self.change_button, True))
+        encoder.bind("<ButtonRelease-1>", partial(self.change_button, False))
         encoder.grid(column=1, row=0)
-        encoder_decr = tk.Button(encoder_frame, text=">", command=partial(self.send_encoder_event, EncoderEvent.INCREMENT))
+        encoder_decr = tk.Button(encoder_frame, text=">", command=partial(self.change_value, +1))
         encoder_decr.grid(column=2, row=0)
         encoder_frame.place(relx = 0.5, rely = 0.5, anchor = "center")
 
@@ -52,8 +51,11 @@ class Application:
         midi_in_send = tk.Button(self.app, text="Send", command=self.send_midi_in)
         midi_in_send.grid(column = 2, row = 3)
 
+        self.value = 0
+
         self.midi_observer = None
-        self.encoder_observer = None
+        self.value_observer = None
+        self.button_observer = None
 
     # Display implementation
     def show_pixels(self, pixels):
@@ -67,8 +69,14 @@ class Application:
                 self.display.create_rectangle(2 + scale_x * (1+x), scale_y * (1+y), scale_x * (2+x) - 4, scale_y * (2+y) - 2, fill=rgb_color(pixel))
 
     # Control implementation
-    def observe_encoder(self, observer):
-        self.encoder_observer = observer
+    def observe_value(self, observer):
+        self.value_observer = observer
+        
+    def set_value(self, value):
+        self.value = value
+
+    def observe_buttons(self, observer):
+        self.button_observer = observer
 
     # MIDI implementation
     def observe_messages(self, observer):
@@ -93,6 +101,11 @@ class Application:
         else:
             self.midi_in.configure(background="red")
 
-    def send_encoder_event(self, event, _=None):
-        if (self.encoder_observer):
-            self.encoder_observer(event)
+    def change_value(self, change):
+        self.value += change
+        if (self.value_observer):
+            self.value_observer(self.value)
+
+    def change_button(self, pressed, _):
+        if (self.button_observer):
+            self.button_observer(pressed)
