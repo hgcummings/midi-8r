@@ -7,7 +7,7 @@ class Display:
     def show_patches(self, patch_in, patch_out, saved):
         self.pixel_display.show_pixels(
             render_line("▶" + str(patch_in), (255,255,255)) +
-            render_line("◀" + str(patch_out), (64, 255, 64) if saved else (255, 64, 64)))
+            render_line("◀" + str(patch_out), (32, 255, 32) if saved else (127, 0, 0)))
 
     def show_text(self, text):
         self.pixel_display.show_pixels(render_line(text, (255, 255, 255)))
