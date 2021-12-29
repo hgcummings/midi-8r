@@ -12,11 +12,11 @@ class Diagnostic:
 
         self.display.show_text("DIAG")
 
-        self.midi.observe_messages(self.on_midi_message)
-        self.control.observe_encoder(self.on_encoder_event)
-
         self.input_patch = None
         self.output_patch = None
+        self.midi.observe_messages(self.on_midi_message)
+
+        self.control.observe_encoder(self.on_encoder_event)
 
     def on_midi_message(self, message):
         if (isinstance(message, ProgramChange)):
