@@ -1,12 +1,12 @@
 from adapters.noop.control import NoOpControl
-from adapters.noop.midi import NoOpMidi
 from adapters.noop.storage import NoOpStorage
 from cores.diag import Diagnostic
 from ports.rgb_matrix import RgbMatrix
+from ports.shell_midi import ShellMidi
 from adapters.display import Display
 from adapters.noop import *
 from config import *
 
-matrix = RgbMatrix(RGB_MATRIX_PIN_NO)
+midi = ShellMidi()
 
-core = Diagnostic(NoOpMidi(), NoOpControl(), NoOpStorage(), Display(matrix))
+core = Diagnostic(midi, NoOpControl(), NoOpStorage(), Display(RgbMatrix(RGB_MATRIX_PIN_NO)))
