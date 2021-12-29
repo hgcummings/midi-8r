@@ -8,7 +8,11 @@ class ExternalMidi:
         self.midi_observer = None
 
         # UART.irq isn't implemented for rp2 yet, so use polling rather than interrupt
-        timer = Timer(-1, mode=Timer.PERIODIC,period=100,callback=self.recv_midi)
+        #
+        # Note: although we don't need to reference the timer again, it's important to
+        # store it in an instance attribute so that it doesn't get GC'd
+        self.timer = Timer(-1)
+        self.timer.init(period=100, mode=Timer.PERIODIC, callback=self.recv_midi)
         
     def recv_midi(self, _):
         while(True):
