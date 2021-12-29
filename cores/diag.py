@@ -43,10 +43,10 @@ class Diagnostic:
                 self.output_patch == self.storage.get_preset(self.input_patch))
 
     def on_button_change(self, pressed):
-        if (pressed):
+        if (pressed and self.input_patch != None):
             self.storage.set_preset(self.input_patch, self.output_patch)
             self.display.show_patches(self.input_patch, self.output_patch, True)
 
     def on_value_change(self, value):
-        if (self.output_patch != None):
+        if (self.input_patch != None):
             self.update_patches(self.input_patch, value)

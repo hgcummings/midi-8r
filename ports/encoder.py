@@ -34,6 +34,5 @@ class Encoder:
             self.value_observer(self.rotary.value())
         
     def on_button_change(self, pressed):
-        print(self.button_pin.value())
         if (self.button_observer):
             self.button_observer(not self.button_pin.value())
