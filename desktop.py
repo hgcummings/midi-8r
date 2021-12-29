@@ -2,9 +2,11 @@ from cores.diag import Diagnostic
 from ports.gui import Application
 from adapters.storage.file import FileStorage
 from adapters.display import Display
+import os
 
 app = Application()
 
-with open("storage.bin", "r+b") as f:
-    core = Diagnostic(app, app, FileStorage(f.fileno()), Display(app))
-    app.show_ui()
+storage_path = os.path.join(os.path.dirname(__file__), "storage.bin")
+
+core = Diagnostic(app, app, FileStorage(storage_path), Display(app))
+app.show_ui()
