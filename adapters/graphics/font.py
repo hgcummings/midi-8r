@@ -7,34 +7,22 @@ with open(font_path, encoding="utf8") as f:
 
 gap = [[0]]
 
-def render_line(text, colour):
-    characters = []
-    max_height = 0
-    for i, text_char in enumerate(text):
+def render_line(display, offset_x, offset_y, text, colour):
+    for text_char in text:
         glyph = font["glyphs"][""]
         if (font["glyphs"][text_char]):
             glyph = font["glyphs"][text_char]
         else:
             print("Missing character " + text_char)
 
-        blank_row = [[0] for _ in glyph["pixels"][0]]
-        new_character = [blank_row for _ in range(glyph["offset"])]        
-        for row in glyph["pixels"]:
-            new_character.append(row)
-        max_height = max(max_height, len(new_character))
-        if i > 0:
-            characters.append(gap)
-        characters.append(new_character)
+        for y, row in enumerate(glyph["pixels"]):
+            for x, pixel in enumerate(row):
+                if (pixel == 1):
+                    display.set_pixel(
+                        x + offset_x,
+                        y + offset_y + glyph["offset"],
+                        colour[0],
+                        colour[1],
+                        colour[2])
 
-    def append_char(line, char):
-        blank_row = [[0] for _ in char[len(char) - 1]]
-        for i in range(max_height):
-            row = blank_row if i >= len(char) else char[i]
-            line[i] += [colour if p == 1 else (0,0,0) for p in row]
-        return line
-
-    line = [[] for _ in range(max_height)]
-    for character in characters:
-        append_char(line, character)
-        
-    return line
+        offset_x += len(glyph["pixels"][0]) + 1

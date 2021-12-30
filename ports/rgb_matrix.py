@@ -2,7 +2,7 @@ from machine import Pin
 import rp2
 
 # The RGB matrix pixels are _very_ bright, so reduce all the intensities by this factor
-DIM_FACTOR = 16
+DIM = 16
 
 # Configure the number of WS2812 LEDs.
 NUM_ROWS = 10
@@ -31,25 +31,13 @@ class RgbMatrix:
         self.rows = rows
         self.cols = cols
 
-    def show_pixels(self, pixels):
-        for i in range(NUM_ROWS):
-            for j in range(NUM_COLS):
-                if i < len(pixels) and j < len(pixels[i]):
-                    self.buffer[(i * NUM_COLS) + j] = (
-                        ((pixels[i][j][0] // DIM_FACTOR) << 8) |
-                        ((pixels[i][j][1] // DIM_FACTOR) << 16) |
-                        (pixels[i][j][2] // DIM_FACTOR)
-                    )
-                else:
-                    self.buffer[(i * NUM_COLS) + j] = 0
-        self.show_buffer()
-
-    def clear(self):
+    def clear_buffer(self):
         for i in range(self.rows * self.cols):
             self.buffer[i] = 0
-        self.show_buffer()
-
+    
+    def set_pixel(self, x, y, r, g, b):
+        self.buffer[(y * self.cols) + x] = (((r // DIM) << 8) | ((g // DIM) << 16) | (b // DIM))
+    
     def show_buffer(self):
         for pixel in self.buffer:
             self.sm.put(pixel, 8)
-

@@ -8,8 +8,6 @@ from functools import partial
 # Pixels per mm: 4.4
 
 # Display dimensions
-width = 16
-height = 10
 scale_x = 15
 scale_y = 10
 
@@ -17,13 +15,16 @@ def rgb_color(rgb):
     return "#%02x%02x%02x" % rgb  
 
 class Application:
-    def __init__(self):
+    def __init__(self, rows, cols):
         self.app = tk.Tk()
 
         pedal = tk.Frame(self.app, width=308, height=484, background="black")
         pedal.grid(column=0, columnspan=3, row=0)
 
-        self.display = tk.Canvas(pedal, width=scale_x*(width+2), height=scale_y*(height+2), background="black")
+        self.buffer = [[(0,0,0) for x in range(cols)] for y in range(rows)]
+        self.rows = rows
+        self.cols = cols
+        self.display = tk.Canvas(pedal, width=scale_x*(cols+2), height=scale_y*(rows+2), background="black")
         self.display.place(relx = 0.5, rely = 0.1, anchor = "n")
 
         encoder_frame = tk.Frame(pedal)
@@ -58,9 +59,17 @@ class Application:
         self.button_observer = None
 
     # Display implementation
-    def show_pixels(self, pixels):
+    def clear_buffer(self):
+        for y in range(self.rows):
+            for x in range(self.cols):
+                self.buffer[y][x] = (0,0,0)
+    
+    def set_pixel(self, x, y, r, g, b):
+        self.buffer[y][x] = (r,g,b)
+    
+    def show_buffer(self):
         self.display.delete("all")
-        for y, row in enumerate(pixels):
+        for y, row in enumerate(self.buffer):
             if (y > 9):
                 break
             for x, pixel in enumerate(row):

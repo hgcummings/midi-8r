@@ -3,8 +3,9 @@ from ports.gui import Application
 from adapters.storage.file import FileStorage
 from adapters.display import Display
 import os
+from config import *
 
-app = Application()
+app = Application(RGB_MATRIX_ROWS, RGB_MATRIX_COLS)
 
 storage_path = os.path.join(os.path.dirname(__file__), "storage.bin")
 
