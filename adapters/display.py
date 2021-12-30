@@ -4,6 +4,10 @@ class Display:
     def __init__(self, pixel_display):
         self.pixel_display = pixel_display
 
+    def clear(self):
+        self.pixel_display.clear_buffer()
+        self.pixel_display.show_buffer()
+
     def show_patches(self, patch_in, patch_out, saved):
         self.pixel_display.clear_buffer()
         render_line(self.pixel_display, 0, 0, "▶" + str(patch_in), (255,255,255))
