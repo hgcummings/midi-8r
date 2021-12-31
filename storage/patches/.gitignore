@@ -1,0 +1,3 @@
+# Patches will be stored here, and shouldn't be commited
+*
+!.gitignore
