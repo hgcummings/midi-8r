@@ -25,7 +25,7 @@ class Application:
         self.rows = rows
         self.cols = cols
         self.display = tk.Canvas(pedal, width=scale_x*(cols+2), height=scale_y*(rows+2), background="black")
-        self.display.place(relx = 0.5, rely = 0.1, anchor = "n")
+        self.display.place(relx=0.5, rely=0.1, anchor = "n")
 
         encoder_frame = tk.Frame(pedal)
         encoder_decr = tk.Button(encoder_frame, text="<", command=partial(self.change_value, -1))
@@ -36,7 +36,10 @@ class Application:
         encoder.grid(column=1, row=0)
         encoder_decr = tk.Button(encoder_frame, text=">", command=partial(self.change_value, +1))
         encoder_decr.grid(column=2, row=0)
-        encoder_frame.place(relx = 0.5, rely = 0.5, anchor = "center")
+        encoder_frame.place(relx=0.5, rely=0.5, anchor = "center")
+
+        footswitch = tk.Button(pedal, text="(  )", command=self.press_footswitch)
+        footswitch.place(relx=0.5, rely=0.9, anchor="s")
 
         midi_out_label = tk.Label(self.app, text="MIDI out")
         midi_out_label.grid(column=0, row=1)
@@ -57,6 +60,7 @@ class Application:
         self.midi_observer = None
         self.value_observer = None
         self.button_observer = None
+        self.footswitch_observer = None
 
     # Display implementation
     def clear_buffer(self):
@@ -86,6 +90,9 @@ class Application:
 
     def observe_buttons(self, observer):
         self.button_observer = observer
+
+    def observe_footswitch(self, observer):
+        self.footswitch_observer = observer
 
     # MIDI implementation
     def observe_messages(self, observer):
@@ -118,3 +125,7 @@ class Application:
     def change_button(self, pressed, _):
         if (self.button_observer):
             self.button_observer(pressed)
+
+    def press_footswitch(self):
+        if (self.footswitch_observer):
+            self.footswitch_observer()
