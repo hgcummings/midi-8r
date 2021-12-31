@@ -1,16 +1,15 @@
 import json
 
-font_path = __file__.replace(".py", ".json")
-
+font_path = __file__.replace("text.py", "default_font.json")
 with open(font_path, encoding="utf8") as f:
-    font = json.load(f)
+    default_font = json.load(f)
 
 gap = [[0]]
 
-def render_line(display, offset_x, offset_y, text, colour):
+def render_line(display, offset_x, offset_y, text, colour, font=default_font):
     for text_char in text:
         glyph = font["glyphs"][""]
-        if (font["glyphs"][text_char]):
+        if (text_char in font["glyphs"]):
             glyph = font["glyphs"][text_char]
         else:
             print("Missing character " + text_char)

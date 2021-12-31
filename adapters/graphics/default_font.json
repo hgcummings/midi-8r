@@ -6,7 +6,7 @@
     "glyphs": {
         " ": {
             "offset": 0,
-            "pixels": [0,0]
+            "pixels": [[0,0]]
         },
         "!": {
             "offset": 0,
