@@ -26,5 +26,6 @@ class ExternalMidi:
     def observe_messages(self, observer):
         self.midi_observer = observer
 
-    def send_message(self, msg):
-        self.midi.send(msg)
+    def send_message(self, msg, channel=None):
+        # TODO:1 Could specify channel inside message object instead?
+        self.midi.send(msg, channel)
