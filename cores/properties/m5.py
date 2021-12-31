@@ -1,8 +1,8 @@
 from adafruit_midi.control_change import ControlChange
 from adafruit_midi.program_change import ProgramChange
 
-MIDI_CHANNEL = 1 # Zero-indexed, so this is Channel 2
-MIDI_CC_ON_OFF = 11 # TODO:2 Check if this is zero-indexed and should be 10
+MIDI_CHANNEL = 1 # Adafruit MIDI library is zero-indexed, so this is MIDI Channel 2
+MIDI_CC_ON_OFF = 11
 
 MIN_PRESET = 1
 MAX_PRESET = 24

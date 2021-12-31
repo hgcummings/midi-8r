@@ -17,7 +17,6 @@ class ShellMidi:
         self.midi_observer = observer
         
     def send_message(self, message, channel=0):
-        # TODO:1 Could specify channel inside message object instead?
         if (isinstance(message, ProgramChange)):
             print("C{}PC{}".format(channel, message.patch))
         elif (isinstance(message, ControlChange)):
