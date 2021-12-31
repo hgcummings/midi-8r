@@ -1,4 +1,3 @@
-from struct import calcsize
 from cores.properties import *
 from cores.properties.m5 import M5
 from cores.properties.tuning import Tuning
@@ -60,7 +59,7 @@ class PatchCore:
             self.props[self.current_prop].clear_alert()
             self.to_view_mode()
         elif (self.current_mode == EDIT):
-            self.props[self.current_prop]
+            self.props[self.current_prop].switch()
 
     def on_button(self, pressed):
         if (not pressed):

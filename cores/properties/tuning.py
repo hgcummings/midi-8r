@@ -16,6 +16,7 @@ class Tuning:
         self.midi = midi
         self.control = control
         self.display = display
+
         self.last_acknowledged_tuning = 0
         self.alert = False
 
@@ -23,8 +24,7 @@ class Tuning:
         self.index = data[0]
         self.saved_index = self.index
         if (self.index != self.last_acknowledged_tuning):
-            self.midi.send_message(ControlChange(MIDI_CC_TUNER_ON_OFF, 127))
-            self.alert = True
+            self._set_alert()
         elif (self.alert):
             self.clear_alert()
 
@@ -33,6 +33,10 @@ class Tuning:
 
     def show(self):
         self.display.show_text(tunings[self.index], font)
+
+    def _set_alert(self):
+        self.alert = True
+        self.midi.send_message(ControlChange(MIDI_CC_TUNER_ON_OFF, 127))
 
     def clear_alert(self):
         self.alert = False
