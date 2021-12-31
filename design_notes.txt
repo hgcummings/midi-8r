@@ -17,17 +17,15 @@ Controls:
 
 Display:
  - Turn rotary encoder
-   - Cycles through values for current property
+   - Cycles through properties
  - Press rotary encoder
-   - Value changed?
-     Y Opens menu on SAVE
-       - Press rotary encoder again
-         - Saves current property
-     N Opens menu on current property
-   - Turn rotary encoder
-     - Cycles through property names
-     - Press rotary encoder again
-       - Shows value for selected property
+   - Enters edit mode for current property
+   - Default edit mode:
+     - Turn rotary encoder  
+      - Cycles through values for current (sub)property
+     - Push rotary encoder
+      - Goes to next subproperty or
+      - Saves and exits edit mode
 
 On preset change:
  - Compare tuning against last acknowledged tuning
