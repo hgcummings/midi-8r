@@ -1,0 +1,37 @@
+Properties per preset:
+ - Song ID (of some kind)
+ - Part ID (intro/verse/chorus/solo/etc.)
+ - M5 setting (preset number and on/off)
+ - Tuning
+ - Guitar
+ - Pickup selection
+
+Controls:
+ - Change value of property:
+   - Default: rotary encoder
+   - M5 on/off: footswitch?
+ - Save property
+   - Press and release
+ - Select property
+   - Press and turn rotary encoder
+
+Display:
+ - Turn rotary encoder
+   - Cycles through values for current property
+ - Press rotary encoder
+   - Value changed?
+     Y Opens menu on SAVE
+       - Press rotary encoder again
+         - Saves current property
+     N Opens menu on current property
+   - Turn rotary encoder
+     - Cycles through property names
+     - Press rotary encoder again
+       - Shows value for selected property
+
+On preset change:
+ - Compare tuning against last acknowledged tuning
+    - If different, enable tuner
+    - If tuner enabled, footswitch disables tuner and updates last acknowledged tuning
+ - Display pickup selection for 3(?) seconds
+ - Display parts in song (i.e. which prests are used in this song for which parts)
