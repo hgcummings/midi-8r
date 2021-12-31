@@ -36,7 +36,8 @@ class RgbMatrix:
             self.buffer[i] = 0
     
     def set_pixel(self, x, y, r, g, b):
-        self.buffer[(y * self.cols) + x] = (((r // DIM) << 8) | ((g // DIM) << 16) | (b // DIM))
+        if (y < self.rows and x < self.cols):
+            self.buffer[(y * self.cols) + x] = (((r // DIM) << 8) | ((g // DIM) << 16) | (b // DIM))
     
     def show_buffer(self):
         for pixel in self.buffer:

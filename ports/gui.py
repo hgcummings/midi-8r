@@ -69,7 +69,8 @@ class Application:
                 self.buffer[y][x] = (0,0,0)
     
     def set_pixel(self, x, y, r, g, b):
-        self.buffer[y][x] = (r,g,b)
+        if (y < self.rows and x < self.cols):
+            self.buffer[y][x] = (r,g,b)
     
     def show_buffer(self):
         self.display.delete("all")
