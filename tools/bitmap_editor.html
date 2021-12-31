@@ -1,0 +1,56 @@
+<!doctype html>
+<head>
+    
+</head>
+<body>
+    <div id="matrix"></div>
+    <div>
+        <button id="download">Download</button>
+        <a id="download_link"></a>
+    </div>
+    <script>
+        const width = 16;
+        const height = 10;
+
+        const matrix = document.getElementById("matrix");
+
+        for (let y = 0; y < height; ++y) {
+            const row = document.createElement("div");
+            row.classList.add("row");
+
+            for (let x = 0; x < width; ++x) {
+                const checkbox = document.createElement("input");
+                checkbox.setAttribute("type", "checkbox");
+                row.appendChild(checkbox);
+            }
+
+            matrix.appendChild(row);
+        }
+
+        document.getElementById("download").addEventListener("click", download);
+
+        function download() {
+            let output = new Uint8Array(height * Math.floor(width / 8));
+            const rows = document.getElementsByClassName("row");
+            const pixels = [...rows].map(row => row.getElementsByTagName("input"));
+
+            for (let y = 0; y < height; ++y) {
+                let value = 0;
+                const inputs = rows[y].getElementsByTagName("input");
+                for (let x = 0; x < width; ++x) {
+                    if (inputs[x].checked) {
+                        value += Math.pow(2, (width - x - 1) % 8);
+                    }
+                    if ((x + 1) % 8 === 0) {
+                        output[(y * Math.floor(width / 8)) + ((x - 7) / 8)] = value;
+                        value = 0;
+                    }
+                }
+            }
+
+            const downloadLink = document.getElementById("download_link");
+            downloadLink.href = URL.createObjectURL(new Blob([output.buffer], {type: 'application/octet-stream'}));
+            downloadLink.innerText = "Ready";
+        }
+    </script>
+</body>
