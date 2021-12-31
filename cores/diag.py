@@ -15,7 +15,7 @@ class Diagnostic:
         self.midi.observe_messages(self.on_midi_message)
 
         self.control.observe_value(self.on_value_change)
-        self.control.observe_buttons(self.on_button_change)
+        self.control.observe_button(self.on_button_change)
 
     def on_midi_message(self, message):
         if (isinstance(message, ProgramChange)):

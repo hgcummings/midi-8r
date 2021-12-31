@@ -84,11 +84,15 @@ class Application:
     # Control implementation
     def observe_value(self, observer):
         self.value_observer = observer
+
+    def set_range(self, min, max):
+        self.min_val = min
+        self.max_val = max
         
     def set_value(self, value):
         self.value = value
 
-    def observe_buttons(self, observer):
+    def observe_button(self, observer):
         self.button_observer = observer
 
     def observe_footswitch(self, observer):
@@ -119,6 +123,10 @@ class Application:
 
     def change_value(self, change):
         self.value += change
+        if self.value > self.max_val:
+            self.value = self.min_val
+        elif self.value < self.min_val:
+            self.value = self.max_val
         if (self.value_observer):
             self.value_observer(self.value)
 
