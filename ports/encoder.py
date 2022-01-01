@@ -26,8 +26,8 @@ class Encoder:
     def observe_button(self, observer):
         self.button_observer = observer
 
-    def set_range(self, min, max):
-        self.rotary.set(min_val=min,max_val=max)
+    def set_range_and_value(self, min, val, max):
+        self.rotary.set(value=val,min_val=min,max_val=max)
         
     def set_value(self, value):
         self.rotary.set(value=value)

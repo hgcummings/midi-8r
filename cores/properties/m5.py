@@ -11,9 +11,8 @@ class M5:
     format = "b"
     alert = False
 
-    def __init__(self, midi, control, display):
+    def __init__(self, midi, display):
         self.midi = midi
-        self.control = control
         self.display = display
 
     def load(self, data):
@@ -35,9 +34,8 @@ class M5:
         self.display.show_text("P{}".format(self.preset))
 
     def edit(self):
-        self.control.set_range(MIN_PRESET, MAX_PRESET)
-        self.control.set_value(self.preset)
         self.__display_edit()
+        return (MIN_PRESET, self.preset, MAX_PRESET)
 
     def next(self):
         return False

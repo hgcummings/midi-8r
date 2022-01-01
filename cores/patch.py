@@ -17,7 +17,7 @@ class PatchCore:
 
         self.display.show_bitmap("patch.bin", (255,255,255))
 
-        self.props = [M5(midi, control, display), Tuning(midi, control, display)]
+        self.props = [M5(midi, display), Tuning(midi, display)]
 
         self.current_patch = None
         self.current_prop = 0
@@ -43,8 +43,7 @@ class PatchCore:
                 self.current_prop = i
                 break
         self.props[self.current_prop].show()
-        self.control.set_range(0, len(self.props) - 1)
-        self.control.set_value(self.current_prop)
+        self.control.set_range_and_value(0, self.current_prop, len(self.props) - 1)
 
     def on_value_change(self, value):
         if (self.current_mode == VIEW):
@@ -66,7 +65,8 @@ class PatchCore:
             return
         if (self.current_mode == VIEW):
             self.current_mode = EDIT
-            self.props[self.current_prop].edit()
+            values = self.props[self.current_prop].edit()
+            self.control.set_range_and_value(*values)
         elif (self.current_mode == EDIT):
             next = self.props[self.current_prop].next()
             if (not next):

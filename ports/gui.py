@@ -87,8 +87,9 @@ class Application:
     def observe_value(self, observer):
         self.value_observer = observer
 
-    def set_range(self, min, max):
+    def set_range_and_value(self, min, val, max):
         self.min_val = min
+        self.value = val
         self.max_val = max
         
     def set_value(self, value):
