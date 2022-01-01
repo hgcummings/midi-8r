@@ -45,12 +45,15 @@ class Tuning:
         self.__show_edit(display)
         return (0, self.index, len(tunings) - 1)
 
-    def next(self):
-        return None
-
     def update_value(self, value, display):
         self.index = value
         self.__show_edit(display)
+
+    def switch(self, *_):
+        pass
+
+    def next(self):
+        return None
 
     def save(self):
         self.last_acknowledged_tuning = self.index

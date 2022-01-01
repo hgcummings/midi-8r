@@ -25,8 +25,7 @@ class M5:
 
         self.saved_preset = self.preset
 
-        self.midi.send_message(ProgramChange(self.preset - 1), channel=MIDI_CHANNEL)
-        self.midi.send_message(ControlChange(MIDI_CC_ON_OFF, 127 if self.init_on else 0), channel=MIDI_CHANNEL)
+        self.__update_midi()
 
     def show_view(self, display):
         display.show_text("P{}".format(self.preset))
@@ -35,12 +34,17 @@ class M5:
         self.__show_edit(display)
         return (MIN_PRESET, self.preset, MAX_PRESET)
 
-    def next(self):
-        return None
-
     def update_value(self, value, display):
         self.preset = value
         self.__show_edit(display)
+        self.__update_midi()
+
+    def switch(self, *_):
+        self.init_on = not self.init_on
+        self.__update_midi()
+
+    def next(self):
+        return None
 
     def save(self):
         self.saved_preset = self.preset
@@ -49,3 +53,7 @@ class M5:
     def __show_edit(self, display):
         display.show_text("P{}".format(self.preset),
             colour=(32,255,32) if self.preset == self.saved_preset else (127,0,0))
+
+    def __update_midi(self):
+        self.midi.send_message(ProgramChange(self.preset - 1), channel=MIDI_CHANNEL)
+        self.midi.send_message(ControlChange(MIDI_CC_ON_OFF, 127 if self.init_on else 0), channel=MIDI_CHANNEL)
