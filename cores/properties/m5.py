@@ -11,9 +11,8 @@ class M5:
     format = "b"
     alert = False
 
-    def __init__(self, midi, display):
+    def __init__(self, midi):
         self.midi = midi
-        self.display = display
 
     def load(self, data):
         if (data[0] == 0):
@@ -30,24 +29,24 @@ class M5:
         self.midi.send_message(ProgramChange(self.preset - 1), channel=MIDI_CHANNEL)
         self.midi.send_message(ControlChange(MIDI_CC_ON_OFF, 127 if self.init_on else 0), channel=MIDI_CHANNEL)
 
-    def show(self):
-        self.display.show_text("P{}".format(self.preset))
+    def show_view(self, display):
+        display.show_text("P{}".format(self.preset))
 
-    def edit(self):
-        self.__display_edit()
+    def edit(self, display):
+        self.__show_edit(display)
         return (MIN_PRESET, self.preset, MAX_PRESET)
 
     def next(self):
-        return False
+        return None
 
-    def update_value(self, value):
+    def update_value(self, value, display):
         self.preset = value
-        self.__display_edit()
+        self.__show_edit(display)
 
     def save(self):
         self.saved_preset = self.preset
         return (self.preset * (1 if self.init_on else -1),)
         
-    def __display_edit(self):
-        self.display.show_text("P{}".format(self.preset),
+    def __show_edit(self, display):
+        display.show_text("P{}".format(self.preset),
             colour=(32,255,32) if self.preset == self.saved_preset else (127,0,0))

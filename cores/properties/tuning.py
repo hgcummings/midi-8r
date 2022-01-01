@@ -12,9 +12,8 @@ with open(font_path, encoding="utf8") as f:
 class Tuning:
     format = "B"
 
-    def __init__(self, midi, display):
+    def __init__(self, midi):
         self.midi = midi
-        self.display = display
 
         self.last_acknowledged_tuning = 0
         self.alert = False
@@ -28,10 +27,10 @@ class Tuning:
             self.clear_alert()
 
     def save(self):
-        return (self.index)
+        return (self.index,)
 
-    def show(self):
-        self.display.show_text(tunings[self.index], font)
+    def show_view(self, display):
+        display.show_text(tunings[self.index], font)
 
     def _set_alert(self):
         self.alert = True
@@ -42,22 +41,22 @@ class Tuning:
         self.last_acknowledged_tuning = self.index
         self.midi.send_message(ControlChange(MIDI_CC_TUNER_ON_OFF, 0))
 
-    def edit(self):
-        self.__display_edit()
+    def edit(self, display):
+        self.__show_edit(display)
         return (0, self.index, len(tunings) - 1)
 
     def next(self):
-        return False
+        return None
 
-    def update_value(self, value):
+    def update_value(self, value, display):
         self.index = value
-        self.__display_edit()
+        self.__show_edit(display)
 
     def save(self):
         self.last_acknowledged_tuning = self.index
         self.saved_index = self.index
         return (self.index,)
         
-    def __display_edit(self):
-        self.display.show_text(tunings[self.index], font,
+    def __show_edit(self, display):
+        display.show_text(tunings[self.index], font,
             colour=(32,255,32) if self.index == self.saved_index else (127,0,0))
