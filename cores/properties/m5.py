@@ -25,7 +25,6 @@ class M5:
 
         self.saved_preset = self.preset
 
-        # TODO:1 Could specify channel inside message object instead?
         self.midi.send_message(ProgramChange(self.preset - 1), channel=MIDI_CHANNEL)
         self.midi.send_message(ControlChange(MIDI_CC_ON_OFF, 127 if self.init_on else 0), channel=MIDI_CHANNEL)
 
