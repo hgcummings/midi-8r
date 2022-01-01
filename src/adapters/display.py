@@ -10,9 +10,13 @@ class Display:
         self.pixel_display.clear_buffer()
         self.pixel_display.show_buffer()
 
-    def show_text(self, text, font=default_font, colour=(255,255,255)):
+    def show_text(self, text, line2_text=None, colour=(255,255,255), indent=0, line2_indent=0):
         self.pixel_display.clear_buffer()
-        render_line(self.pixel_display, 0, 2, text, colour, font)
+        if line2_text:
+            render_line(self.pixel_display, indent, 0, text, colour, default_font)
+            render_line(self.pixel_display, line2_indent, 5, line2_text, colour, default_font)
+        else:
+            render_line(self.pixel_display, indent, 2, text, colour, default_font)
         self.pixel_display.show_buffer()
 
     def show_patches(self, patch_in, patch_out, saved):

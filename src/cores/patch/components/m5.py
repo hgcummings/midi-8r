@@ -24,11 +24,12 @@ class M5:
             self.init_on = (self.preset == data[0]) # Init off stored as negative
 
         self.saved_preset = self.preset
+        self.saved_init_on = self.init_on
 
         self.__update_midi()
 
     def show_view(self, display):
-        display.show_text("P{}".format(self.preset))
+        self.__show_current(display)
 
     def edit(self, display):
         self.__show_edit(display)
@@ -39,20 +40,29 @@ class M5:
         self.__show_edit(display)
         self.__update_midi()
 
-    def switch(self, *_):
+    def switch(self, display):
         self.init_on = not self.init_on
         self.__update_midi()
+        self.__show_edit(display)
 
     def next(self):
         return None
 
     def save(self):
         self.saved_preset = self.preset
+        self.saved_init_on = self.init_on
         return (self.preset * (1 if self.init_on else -1),)
-        
+
     def __show_edit(self, display):
-        display.show_text("P{}".format(self.preset),
-            colour=(32,255,32) if self.preset == self.saved_preset else (127,0,0))
+        self.__show_current(display,
+            colour=(32,255,32) if self.preset == self.saved_preset and self.init_on == self.saved_init_on else (127,0,0))
+
+    def __show_current(self, display, colour=(255,255,255)):
+        display.show_text(
+            "P{}".format(self.preset),
+            line2_text="(on)" if self.init_on else "(off)",
+            line2_indent=1,
+            colour=colour)
 
     def __update_midi(self):
         self.midi_out(ProgramChange(self.preset - 1), channel=MIDI_CHANNEL)
