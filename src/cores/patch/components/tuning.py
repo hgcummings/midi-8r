@@ -1,13 +1,8 @@
-import json
 from adafruit_midi.control_change import ControlChange
 
 MIDI_CC_TUNER_ON_OFF = 16
 
-tunings = ["E std.","drpD"]
-
-font_path = __file__.replace(".py", "_font.json")
-with open(font_path, encoding="utf8") as f:
-    font = json.load(f)
+tunings = ["E std.","drp D"]
 
 class Tuning:
     format = "B"
@@ -30,7 +25,7 @@ class Tuning:
         return (self.index,)
 
     def show_view(self, display):
-        display.show_text(tunings[self.index], font)
+        display.show_text(tunings[self.index])
 
     def _set_alert(self):
         self.alert = True
@@ -61,5 +56,5 @@ class Tuning:
         return (self.index,)
         
     def __show_edit(self, display):
-        display.show_text(tunings[self.index], font,
+        display.show_text(tunings[self.index],
             colour=(32,255,32) if self.index == self.saved_index else (127,0,0))

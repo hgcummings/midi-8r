@@ -1,6 +1,6 @@
 class BootScreen:
     def edit(self, display):
-        display.show_bitmap("patch.bin", (255,255,255))
+        display.show_text("Patch")
         return (0,0,0)
 
     def update_value(self, *_):
