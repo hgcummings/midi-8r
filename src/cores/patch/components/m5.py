@@ -11,8 +11,8 @@ class M5:
     format = "b"
     alert = False
 
-    def __init__(self, midi):
-        self.midi = midi
+    def __init__(self, midi_out):
+        self.midi_out = midi_out
 
     def load(self, data):
         if (data[0] == 0):
@@ -55,5 +55,5 @@ class M5:
             colour=(32,255,32) if self.preset == self.saved_preset else (127,0,0))
 
     def __update_midi(self):
-        self.midi.send_message(ProgramChange(self.preset - 1), channel=MIDI_CHANNEL)
-        self.midi.send_message(ControlChange(MIDI_CC_ON_OFF, 127 if self.init_on else 0), channel=MIDI_CHANNEL)
+        self.midi_out(ProgramChange(self.preset - 1), channel=MIDI_CHANNEL)
+        self.midi_out(ControlChange(MIDI_CC_ON_OFF, 127 if self.init_on else 0), channel=MIDI_CHANNEL)

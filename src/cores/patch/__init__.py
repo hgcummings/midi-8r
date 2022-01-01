@@ -11,7 +11,7 @@ class PatchCore:
     def __init__(self, storage_root, midi, control, display):
         self.storage_root = storage_root
 
-        self.props = [M5(midi), Tuning(midi)]
+        self.props = [M5(midi.send_message), Tuning(midi.send_message)]
 
         self.menu = PropertyMenu(self.props)
         self.state = UiStateManager(BootScreen(), control, display)
