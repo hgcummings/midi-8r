@@ -1,0 +1,54 @@
+guitars = {
+    "P112": ((0), (3), (6,7)),
+    " LP ": ((0,1), (4,5)),
+    "TL-6": ((0))
+}
+
+class Guitar:
+    format = "B"
+
+    def __init__(self, _):
+        self.last_acknowledged_guitar = 0
+        self.alert = False
+
+    def load(self, data):
+        self.index = data[0]
+        self.saved_index = self.index
+        if (self.index != self.last_acknowledged_guitar):
+            self.set_alert()
+        elif (self.alert):
+            self.clear_alert()
+
+    def save(self):
+        return (self.index)
+
+    def display_view(self):
+        self.display.show_text(tunings[self.index], font)
+
+    def set_alert(self):
+        self.alert = True
+        self.midi.send_message(ControlChange(MIDI_CC_TUNER_ON_OFF, 127))
+
+    def clear_alert(self):
+        self.alert = False
+        self.last_acknowledged_tuning = self.index
+        self.midi.send_message(ControlChange(MIDI_CC_TUNER_ON_OFF, 0))
+
+    def edit(self):
+        pass
+
+    def next(self):
+        return self.next_prop
+
+    def update_value(self, value):
+        self.index = value
+        self.__display_edit()
+
+    def save(self):
+        self.last_acknowledged_tuning = self.index
+        self.saved_index = self.index
+        return (self.index,)
+        
+    def __display_edit(self):
+        self.display.show_text(tunings[self.index], font,
+            colour=(32,255,32) if self.index == self.saved_index else (127,0,0))

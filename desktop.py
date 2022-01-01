@@ -1,4 +1,3 @@
-from cores.diag import Diagnostic
 from cores.patch import PatchCore
 from ports.gui import Application
 from adapters.storage.file import FileStorage
