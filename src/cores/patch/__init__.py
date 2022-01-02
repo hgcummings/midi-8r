@@ -2,6 +2,7 @@ from .components.boot_screen import BootScreen
 from .components.property_menu import PropertyMenu
 from .components.m5 import M5
 from .components.tuning import Tuning
+from .components.guitar import Guitar
 from .ui_state_manager import UiStateManager
 
 from adafruit_midi.program_change import ProgramChange
@@ -11,7 +12,7 @@ class PatchCore:
     def __init__(self, storage_root, midi, control, display):
         self.storage_root = storage_root
 
-        self.props = [M5(midi.send_message), Tuning(midi.send_message)]
+        self.props = [M5(midi.send_message), Tuning(midi.send_message), Guitar()]
 
         self.menu = PropertyMenu(self.props)
         self.state = UiStateManager(BootScreen(), control, display)

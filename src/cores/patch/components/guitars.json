@@ -1,0 +1,6 @@
+[
+    null,
+    { "name": "P112", "strings": 6, "pickups": [[0], [0,3], [3], [3,6], [6,7]], "default": 4  },
+    { "name": "EpiLP", "strings": 6, "pickups": [[0,1], [0,1,4,5], [4,5]], "default": 2 },
+    { "name": "TL-6", "strings": 6, "pickups": [[0]], "default": 0 }
+]
