@@ -107,18 +107,18 @@ class PickupImage:
     def height(self):
         return self._guitar["strings"]
 
-    def set(self, guitar_index, pickup_index, selected_colour):
+    def set(self, guitar_index, pickup_index, colour):
         self._guitar = self._guitars[guitar_index]
         self._pickup = self._guitar["pickups"][pickup_index]
 
-        unselected_colour = tuple(comp // 2 for comp in selected_colour)
+        unselected_colour = (colour[0] // 4, colour[1] // 4, colour[2] // 8)
 
         for x in range(self.width()):
             self._row_buf[x] = self._bg_col
 
         for pu in self._guitar["pickups"]:
             for x in pu:
-                self._row_buf[x] = selected_colour if x in self._pickup else unselected_colour
+                self._row_buf[x] = colour if x in self._pickup else unselected_colour
 
     def __getitem__(self, _):
         return self._row_buf
