@@ -35,10 +35,7 @@ class PatchCore:
     def on_footswitch(self):
         self.state.switch()
 
-    def on_button(self, pressed):
-        if (not pressed):
-            return
-
+    def on_button(self):
         next_state = self.state.next()
         if (next_state == None):
             # We've exited a property editor, so need to save any changes
@@ -65,4 +62,4 @@ class PatchCore:
                 f.write(struct.pack(prop.format, *prop.save()))
 
     def patch_path(self):
-        return "{}/storage/patches/{:03d}".format(self.storage_root, self.current_patch)
+        return "{}/patches/{:03d}".format(self.storage_root, self.current_patch)

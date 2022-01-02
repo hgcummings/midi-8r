@@ -31,9 +31,7 @@ class Application:
         encoder_frame = tk.Frame(pedal)
         encoder_decr = tk.Button(encoder_frame, text="<", command=partial(self.change_value, -1))
         encoder_decr.grid(column=0, row=0)
-        encoder = tk.Button(encoder_frame, text="O")
-        encoder.bind("<Button-1>", partial(self.change_button, True))
-        encoder.bind("<ButtonRelease-1>", partial(self.change_button, False))
+        encoder = tk.Button(encoder_frame, text="O", command=self.press_button)
         encoder.grid(column=1, row=0)
         encoder_decr = tk.Button(encoder_frame, text=">", command=partial(self.change_value, +1))
         encoder_decr.grid(column=2, row=0)
@@ -135,9 +133,9 @@ class Application:
         if (self.value_observer):
             self.value_observer(self.value)
 
-    def change_button(self, pressed, _):
+    def press_button(self):
         if (self.button_observer):
-            self.button_observer(pressed)
+            self.button_observer()
 
     def press_footswitch(self):
         if (self.footswitch_observer):

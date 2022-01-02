@@ -1,5 +1,6 @@
 from adafruit_midi.program_change import ProgramChange
-from config import *
+
+OUTPUT_PATCH_RANGE = 24
 
 class Diagnostic:
     def __init__(self, midi, control, storage, display) -> None:
@@ -15,7 +16,9 @@ class Diagnostic:
         self.midi.observe_messages(self.on_midi_message)
 
         self.control.observe_value(self.on_value_change)
-        self.control.observe_button(self.on_button_change)
+        self.control.observe_button(self.on_button)
+
+        self.control.set_range_and_value(0, 0, OUTPUT_PATCH_RANGE - 1)
 
     def on_midi_message(self, message):
         if (isinstance(message, ProgramChange)):
@@ -42,8 +45,8 @@ class Diagnostic:
                 self.output_patch,
                 self.output_patch == self.storage.get_preset(self.input_patch))
 
-    def on_button_change(self, pressed):
-        if (pressed and self.input_patch != None):
+    def on_button(self):
+        if (self.input_patch != None):
             self.storage.set_preset(self.input_patch, self.output_patch)
             self.display.show_patches(self.input_patch, self.output_patch, True)
 
