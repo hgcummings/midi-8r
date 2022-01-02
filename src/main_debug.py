@@ -6,7 +6,7 @@ from adapters.display import Display
 from config import *
 
 midi = ShellMidi()
-display = Display(RgbMatrix(RGB_MATRIX_PIN_DT, RGB_MATRIX_ROWS, RGB_MATRIX_COLS))
+display = Display(RgbMatrix(RGB_MATRIX_PIN_DT, RGB_MATRIX_ROWS, RGB_MATRIX_COLS, dim_factor=16))
 
 core = PatchCore(
     "/storage",
