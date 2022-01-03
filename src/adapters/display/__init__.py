@@ -1,6 +1,4 @@
-from .graphics.text import render_line
-from .graphics.text import default_font
-import struct
+from .text import render_line
 
 class Display:
     def __init__(self, pixel_display):
@@ -13,10 +11,10 @@ class Display:
     def show_text(self, text, line2_text=None, colour=(255,255,255), indent=0, line2_indent=0):
         self.pixel_display.clear_buffer()
         if line2_text:
-            render_line(self.pixel_display, indent, 0, text, colour, default_font)
-            render_line(self.pixel_display, line2_indent, 5, line2_text, colour, default_font)
+            render_line(self.pixel_display, indent, 0, text, colour)
+            render_line(self.pixel_display, line2_indent, 5, line2_text, colour)
         else:
-            render_line(self.pixel_display, indent, 2, text, colour, default_font)
+            render_line(self.pixel_display, indent, 2, text, colour)
         self.pixel_display.show_buffer()
 
     def show_image(self, width, height, image):
