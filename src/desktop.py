@@ -1,14 +1,13 @@
-from cores.patch import PatchCore
-from ports.gui import Application
-from adapters.storage.file import FileStorage
-from adapters.display import Display
-
+import sys
 from pathlib import Path
 
-import sys
+from cores.diag import Diagnostic
+from cores.patch import PatchCore
+from adapters.storage.file import FileStorage
+from adapters.display import Display
+from ports.emulated.gui import Application
 
 from config import *
-from cores.diag import Diagnostic
 
 app = Application(RGB_MATRIX_ROWS, RGB_MATRIX_COLS)
 
