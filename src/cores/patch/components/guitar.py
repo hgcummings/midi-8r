@@ -4,6 +4,11 @@ with open(__file__.replace("guitar.py", "guitars.json"), encoding="utf8") as f:
     guitars = json.load(f)
 
 class Guitar:
+    """
+    Component for selecting the guitar (and pickup) used with this patch
+
+    When a patch is first loaded, if the guitar/pickup changes, raises an alert
+    """
     format = "BB"
     default = (1, guitars[1]["default"])
 

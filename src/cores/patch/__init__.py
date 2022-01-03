@@ -9,6 +9,15 @@ from adafruit_midi.program_change import ProgramChange
 import struct
 
 class PatchCore:
+    """
+    Primary class for managing patches
+
+    Responsible for loading and saving patches. All other mutable state is
+    controlled via the `ui_state_manager.UiStateManager`
+
+    Delegates to other `components` for showing or editing parameters,
+    passing through events from the control panel to enable this
+    """
     def __init__(self, storage_root, midi, control, display):
         self.storage_root = storage_root
 

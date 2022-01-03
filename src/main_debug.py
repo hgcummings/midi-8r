@@ -1,3 +1,11 @@
+"""
+Debug boot script for running on Raspberry Pi Pico
+
+Useful for developing/debugging custom core
+
+Uses real hardware ports for the display and control panel, with shell-emulated MIDI
+"""
+
 from cores.patch import PatchCore
 from ports.emulated.shell import ShellMidi
 from ports.hardware.rgb_matrix import RgbMatrix

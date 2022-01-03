@@ -1,4 +1,15 @@
 class PropertyMenu:
+    """
+    Menu component that supports navigation between multiple property components
+
+    Display order is determined by components flagging alerts,
+    then by the order in which components were initially provided
+
+    The rotary encoder is used to select components to view or edit
+
+    The footswitch is used to acknowledge (and clear) an alert
+    from the component currently being displayed
+    """
     def __init__(self, props):
         self.props = props
         self.current_prop = 0

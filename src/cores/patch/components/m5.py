@@ -8,6 +8,11 @@ MIN_PRESET = 1
 MAX_PRESET = 24
 
 class M5:
+    """
+    Component for selecting the preset on the Line 6 M5 pedal, which supports 24 patches
+
+    Footswitch selects whether the M5 effect should be initially on or off whenever this patch is loaded
+    """
     format = "b"
     alert = False
 

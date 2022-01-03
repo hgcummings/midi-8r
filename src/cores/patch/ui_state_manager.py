@@ -1,4 +1,10 @@
 class UiStateManager:
+    """
+    All updates to mutable UI state are the responsibility of this class.
+
+    This class delegates responsibility for updating the display to other components,
+    but only ever to one component at a time, and only in response to specific events.
+    """
     def __init__(self, initial_component, control, display):
         # External state-holding objects
         self._control = control
@@ -7,18 +13,29 @@ class UiStateManager:
         # Internal state
         self.set_component(initial_component)
 
-    def set_component(self, component):
+    def set_component(self, component) -> None:
+        """
+        Set the current component and update UI state accordingly
+        
+        Components must return a tuple for the (min, current, max) value of the rotary encoder
+        """
         self._component = component
         self._control.set_range_and_value(*self._component.edit(self._display))
 
-    def edit(self):
-        return self._component.edit(self._display)
-
-    def update_value(self, value):
+    def update_value(self, value) -> None:
+        """Inform the current component of an update to the selected value"""
         self._component.update_value(value, self._display)
 
-    def switch(self):
+    def switch(self) -> None:
+        """"Inform the current component of the switch being pressed"""
         self._component.switch(self._display)
 
-    def next(self):
+    def next(self) -> object:
+        """
+        Ask the current component to nominate the next component
+        
+        Components should return themselves if they have more work to do
+
+        Components should return None if they do not need to choose the next component
+        """
         return self._component.next()

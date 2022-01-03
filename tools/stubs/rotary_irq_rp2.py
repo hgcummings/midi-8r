@@ -1,0 +1,2 @@
+class RotaryIRQ:
+    pass

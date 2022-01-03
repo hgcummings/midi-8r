@@ -5,6 +5,11 @@ MIDI_CC_TUNER_ON_OFF = 16
 tunings = ["E std.","drp D"]
 
 class Tuning:
+    """
+    Component for selecting the tuning associated with the current patch
+
+    When a patch is first loaded, if the tuning changes, raises an alert and enables the tuner
+    """
     format = "B"
 
     def __init__(self, midi_out):

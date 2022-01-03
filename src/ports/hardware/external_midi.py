@@ -2,6 +2,7 @@ from machine import UART, Pin, Timer
 from adafruit_midi import MIDI
 
 class ExternalMidi:
+    """Provides external MIDI in/out via UART"""
     def __init__(self, tx_pin, rx_pin, out_channel, in_channel):
         uart = UART(0,baudrate=31250,tx=Pin(tx_pin),rx=Pin(rx_pin))
         self.midi = MIDI(midi_in=uart,midi_out=uart,in_channel=in_channel,out_channel=out_channel)

@@ -1,3 +1,11 @@
+"""
+Primary boot script for running on desktop
+
+Uses emulated hardware presented via a GUI
+
+Loads the fully-featured core by default, but can also load the simpler diagnostic core
+"""
+
 import sys
 from pathlib import Path
 

@@ -3,6 +3,13 @@ from adafruit_midi.program_change import ProgramChange
 OUTPUT_PATCH_RANGE = 24
 
 class Diagnostic:
+    """
+    Simple core that maps MIDI program change messages
+
+    Incoming program change messages specify a patch number from 0-127
+    
+    Allows an output patch to be selected, and stored against the current input patch
+    """
     def __init__(self, midi, control, storage, display) -> None:
         self.midi = midi
         self.control = control
