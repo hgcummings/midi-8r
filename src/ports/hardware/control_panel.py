@@ -1,5 +1,5 @@
-from rotary_irq_rp2 import RotaryIRQ
 from machine import Pin, Timer
+from rotary_irq_rp2 import RotaryIRQ
 
 class ControlPanel:
     def __init__(self, pin_btn, pin_clk, pin_dt, pin_fsw):
