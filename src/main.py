@@ -4,7 +4,7 @@ Primary boot script for running on Raspberry Pi Pico
 Uses real hardware ports (display, control panel, MIDI) with a fully-featured core
 """
 
-from cores.patch import PatchCore
+from core.patch import PatchCore
 from ports.hardware.external_midi import ExternalMidi
 from ports.hardware.control_panel import ControlPanel
 from ports.hardware.rgb_matrix import RgbMatrix

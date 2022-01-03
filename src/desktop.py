@@ -9,8 +9,8 @@ Loads the fully-featured core by default, but can also load the simpler diagnost
 import sys
 from pathlib import Path
 
-from cores.diag import Diagnostic
-from cores.patch import PatchCore
+from core.diag import Diagnostic
+from core.patch import PatchCore
 from adapters.storage.file import FileStorage
 from adapters.display import Display
 from ports.emulated.gui import Application

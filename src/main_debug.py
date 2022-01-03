@@ -6,7 +6,7 @@ Useful for developing/debugging custom core
 Uses real hardware ports for the display and control panel, with shell-emulated MIDI
 """
 
-from cores.patch import PatchCore
+from core.patch import PatchCore
 from ports.emulated.shell import ShellMidi
 from ports.hardware.rgb_matrix import RgbMatrix
 from ports.hardware.control_panel import ControlPanel

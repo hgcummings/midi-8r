@@ -4,7 +4,7 @@ Diagnostic boot script for running on Raspberry Pi Pico
 Uses real hardware ports (display, control panel, MIDI) with a minimal core
 """
 
-from cores.diag import Diagnostic
+from core.diag import Diagnostic
 from ports.hardware.external_midi import ExternalMidi
 from ports.hardware.control_panel import ControlPanel
 from ports.hardware.rgb_matrix import RgbMatrix
