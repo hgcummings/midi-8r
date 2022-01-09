@@ -12,12 +12,12 @@ class MidiThru:
         self.midi_observer = observer
 
     def on_message(self, msg):
+        if not (msg is MIDIUnknownEvent):
+            # adafruit_midi doesn't seem to have a way of forwarding unrecognised messages,
+            # so we can't easily offer true MIDI through, but just forward what we can.
+            self.midi_port.send_message(msg, msg.channel)
         if (self.midi_observer):
             self.midi_observer(msg)
-        # adafruit_midi doesn't seem to have a way of forwarding unrecognised messages,
-        # so we can't easily offer true MIDI through, but just forward what we can.
-        if not (msg is MIDIUnknownEvent):
-            self.midi_port.send_message(msg, msg.channel)
 
     def send_message(self, msg, channel=0):
         self.midi_port.send_message(msg, channel)
