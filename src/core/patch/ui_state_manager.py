@@ -14,11 +14,7 @@ class UiStateManager:
         self.set_component(initial_component)
 
     def set_component(self, component) -> None:
-        """
-        Set the current component and update UI state accordingly
-        
-        Components must return a tuple for the (min, current, max) value of the rotary encoder
-        """
+        """Set the current component and update UI state accordingly"""
         self._component = component
         self._control.set_range_and_value(*self._component.edit(self._display))
 
@@ -31,11 +27,5 @@ class UiStateManager:
         self._component.switch(self._display)
 
     def next(self) -> object:
-        """
-        Ask the current component to nominate the next component
-        
-        Components should return themselves if they have more work to do
-
-        Components should return None if they do not need to choose the next component
-        """
+        """Ask the current component to nominate the next component"""
         return self._component.next()
