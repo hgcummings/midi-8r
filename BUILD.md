@@ -107,10 +107,10 @@ I spent a long time considering different options for mounting everything. I ori
 boards on the base of the enclosure, but this would make the wiring quite a bit fiddlier (would need to
 cope with me opening/closing the enclosure) so ended up building everything into the lid.
 
-The RBG matrix came with pre-soldered headers on the back that couldn't easily be removed. I mounted the
+The RGB matrix came with pre-soldered headers on the back that couldn't easily be removed. I mounted the
 Raspberry Pi Pico on the back of it, perpendicular to the intended orientation, to allow the USB port to
 be exposed. This worked out quite nicely: the USB port, together with a couple of strips of plastic glued
-to the lid, kept the whole assembly in place quite firmly.
+inside the window, allowed the whole assembly to be snapped into place quite precisely.
 
 ---
 
@@ -126,39 +126,40 @@ to glue up against the USB port inside the enclosure (you can see this in a late
 
 Check of the external appearance in place on the pedal board. The top of the enclosure looks a bit messy
 at this point because, despite checking the layout beforehand, after fitting the footswitch I decided I
-wanted to change the placement of it, so I had to patch up the hole I'd already drilled.
+wanted to change the placement of it, so I had to patch up the hole I'd already drilled. Another advantage
+of going with ABS rather than metal is that it's a bit more forgiving about this sort of thing.
 
 ---
 
 ![Boards assembled together](img/build_08.jpg)
 
-All the boards assembled. The MIDI breakout board isn't strictly necessary (I think it's just an
-optocoupler and a few resistors), but was convenient and fairly cheap. I initially planed to use
-5-pin DIN connectors, but abandoned this idea (partly due to the lack of suitably-shaped MIDI cables
-to use with it). Unsoldering those was a bit of a pain!
+All the boards assembled. Buying a pre-built MIDI breakout board isn't strictly necessary (I think
+it's just an optocoupler and a few resistors), but was convenient and fairly cheap. I initially
+planned to use 5-pin DIN connectors, but abandoned this idea (partly due to having trouble finding
+MIDI cables with suitably angled plugs to use on my board). Unsoldering those was a bit of a pain!
 
-The board is designed for the AdaFruit Arduino-based boards, but happens to have the same profile as
-the Pico, so went rather neatly alongside it. These are plugged into the headers on the back of the
-RGB LED matrix, although this is almost purely structural. None of the pins are actually connected
-apart from one: the data pin for the display happens to line up nicely with one of the Pico's GPIO
-pins, so I thought I might as well use it.
+The MIDI breakout is designed for the AdaFruit Arduino-based controllers, but happens to have the
+same profile as the Pico, so went rather neatly alongside it. These are plugged into the headers on
+the back of the RGB LED matrix, although this is almost purely for the sake of alignment. None of
+the pins are actually connected apart from one: the data pin for the display happens to line up
+nicely with one of the Pico's GPIO pins, so I thought I might as well use it.
 
 In this photo I've accidentally wired up the power pins for the MIDI breakout back-to-front. Had to
-fix that later.
+fix that later...
 
 The other board here is just some stripboard with a 5V buck converter on it to let me power everything
-from a standard 9V pedal power supply. The diode allows me to safely interchange this with the Pico's
-USB socket. See the [the Pico datasheet](https://datasheets.raspberrypi.com/pico/pico-datasheet.pdf)
-for details (section *4.5. Powering Pico*).
+from a standard 9V pedal power supply. The diode allows me to safely interchange this with a USB cable.
+See the [the Pico datasheet](https://datasheets.raspberrypi.com/pico/pico-datasheet.pdf) for details
+(section *4.5. Powering Pico*).
 
 ---
 
 ![Internal components inside enclosure](img/build_09.jpg)
 
-Everything fully assembled inside the pedal. Apologies for the messy soldering.
+Everything fully assembled inside the pedal. Please excuse the messy soldering in places.
 
 It was quite a tight fit, which was only partly due to careful measuring. I got a bit lucky with some
-things, like the MIDI in jack leaving *just* enough room for the footswitch.
+things, like the MIDI-in jack leaving *just* enough room for the footswitch.
 
 The power jack is also right up against the MIDI breakout, which along with the Pico's USB port did
 a pretty good job of keeping everything in place. However, before closing it up, I put some supporting
@@ -195,10 +196,11 @@ Just waiting for some screws to arrive so I can attach the display cover...
 
 Full electrical/noise test with everything plugged together on the pedalboard, including:
 * All the guitar signal connections
+  (there are a lot of these because the signal passes through both the Cerberus and the EQ2 twice)
 * All the MIDI connections
 * All the USB-capable pedals connected to my desktop PC (via a USB isolator)
 
-(Yes I know the cable management is a mess here; I'm waiting for some more cables and connectors
+(I know the layout cable management is a mess here; I'm waiting for some more bits and pieces
 to arrive so I can neaten it up).
 
 I was pleased to find that nothing adds any extra noise into the guitar signal, apart from the PC

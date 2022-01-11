@@ -23,7 +23,7 @@ program change events. This is a modular editor which can support multiple compo
 with different data associated with the patch.
 
 Current components include:
-* [**M5**](src/components/m5.py) for use with the Line 6 M5 pedals, which only support 24 presets.
+* [**M5**](src/components/m5.py) for use with the Line 6 M5 pedal. The pedal can have 24 presets.
   This component allows a chosen preset (and initial on/off state) to be stored against each
   of the 128 possible MIDI patches. This component updates the M5 pedal automatically via MIDI.
   This patch could easily be adapted to work with other effects pedals.
@@ -32,7 +32,7 @@ Current components include:
 * [**Guitar**](src/components/guitar.py) for storing the guitar and pickup selection
 
 To implement your own component, start from the [template component](src/components/template.py)
-or one of the above. More details on the API can be found in the template components doc comments.
+or one of the above. More details on the API can be found in the template component's doc comments.
 
 Components and hardware configuration (e.g. GPIO pins used) can be modified in [config.py](src/config.py)
 
