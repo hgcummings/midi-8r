@@ -24,6 +24,6 @@ storage_root = Path(Path(__file__).resolve().parent.parent, "storage")
 if len(sys.argv) > 1 and sys.argv[1] == "diag":
     core = Diagnostic(app, app, FileStorage(Path(storage_root, "patches", "diag_all")), Display(app))
 else:
-    core = PatchEditor(storage_root, app, app, Display(app))
+    core = PatchEditor(storage_root, app, app, Display(app), init_components(app))
 
 app.show_ui()

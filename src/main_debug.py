@@ -21,5 +21,6 @@ core = PatchEditor(
     "/storage",
     midi,
     ControlPanel(ENCODER_PIN_BTN, ENCODER_PIN_CLK, ENCODER_PIN_DT, FOOTSWITCH_PIN),
-    display
+    display,
+    init_components(midi)
 )

@@ -1,10 +1,6 @@
-from .components.boot_screen import BootScreen
-from .components.property_menu import PropertyMenu
-from .components.m5 import M5
-from .components.tuning import Tuning
-from .components.guitar import Guitar
+from .boot_screen import BootScreen
+from .property_menu import PropertyMenu
 from .ui_state_manager import UiStateManager
-
 from adafruit_midi.program_change import ProgramChange
 import struct
 
@@ -18,10 +14,10 @@ class PatchEditor:
     Delegates to `components` for showing or editing parameters,
     passing through events from the control panel to enable this
     """
-    def __init__(self, storage_root, midi, control, display):
+    def __init__(self, storage_root, midi, control, display, properties):
         self.storage_root = storage_root
 
-        self.props = [M5(midi.send_message), Tuning(midi.send_message), Guitar()]
+        self.props = properties
 
         self.menu = PropertyMenu(self.props)
         self.state = UiStateManager(BootScreen(), control, display)
