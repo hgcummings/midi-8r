@@ -14,12 +14,15 @@ def test_interface():
     for (_, module_name, _) in iter_modules([package_dir]):
 
         # import the module and iterate through its attributes
-        module = import_module(f"src.cores.patch.components.{module_name}")
+        module = import_module(f"src.components.{module_name}")
         for attribute_name in dir(module):
             attribute = getattr(module, attribute_name)
 
-            if isclass(attribute) and attribute.__module__.startswith("src.cores.patch.components"):
-                # Add the class to this package's variables
+            if isclass(attribute) and attribute.__module__.startswith("src.components"):
+                print(attribute)
+                assert has_method(attribute, "load")
+                assert has_method(attribute, "save")                
+                assert has_method(attribute, "show_view")
                 assert has_method(attribute, "edit")
                 assert has_method(attribute, "update_value")
                 assert has_method(attribute, "switch")

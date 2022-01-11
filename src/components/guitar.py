@@ -15,7 +15,7 @@ class Guitar:
     def __init__(self, *_):
         self.last_acknowledged = self.default
         self.alert = False
-        self.pickup_image = PickupImage(guitars)
+        self.pickup_image = Guitar.PickupImage(guitars)
 
     def load(self, data):
         self.guitar = data[0]
@@ -94,36 +94,36 @@ class Guitar:
             self.pickup_image.height(),
             self.pickup_image)
 
-class PickupImage:
-    _bg_col = (0,0,0)
+    class PickupImage:
+        _bg_col = (0,0,0)
 
-    def __init__(self, guitars):
-        self._row_buf = [self._bg_col] * (max(map(self._guitar_width, guitars[1:])) + 1)
-        self._guitars = guitars
-        self._guitar = 0
-        self._pickup = 0
+        def __init__(self, guitars):
+            self._row_buf = [self._bg_col] * (max(map(self._guitar_width, guitars[1:])) + 1)
+            self._guitars = guitars
+            self._guitar = 0
+            self._pickup = 0
 
-    def _guitar_width(self, guitar):
-        return guitar["pickups"][-1][-1] + 1
+        def _guitar_width(self, guitar):
+            return guitar["pickups"][-1][-1] + 1
 
-    def width(self):
-        return self._guitar_width(self._guitar)
+        def width(self):
+            return self._guitar_width(self._guitar)
 
-    def height(self):
-        return self._guitar["strings"]
+        def height(self):
+            return self._guitar["strings"]
 
-    def set(self, guitar_index, pickup_index, colour):
-        self._guitar = self._guitars[guitar_index]
-        self._pickup = self._guitar["pickups"][pickup_index]
+        def set(self, guitar_index, pickup_index, colour):
+            self._guitar = self._guitars[guitar_index]
+            self._pickup = self._guitar["pickups"][pickup_index]
 
-        unselected_colour = (colour[0] // 4, colour[1] // 4, colour[2] // 8)
+            unselected_colour = (colour[0] // 4, colour[1] // 4, colour[2] // 8)
 
-        for x in range(self.width()):
-            self._row_buf[x] = self._bg_col
+            for x in range(self.width()):
+                self._row_buf[x] = self._bg_col
 
-        for pu in self._guitar["pickups"]:
-            for x in pu:
-                self._row_buf[x] = colour if x in self._pickup else unselected_colour
+            for pu in self._guitar["pickups"]:
+                for x in pu:
+                    self._row_buf[x] = colour if x in self._pickup else unselected_colour
 
-    def __getitem__(self, _):
-        return self._row_buf
+        def __getitem__(self, _):
+            return self._row_buf
