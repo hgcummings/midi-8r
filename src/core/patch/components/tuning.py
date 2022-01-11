@@ -26,9 +26,6 @@ class Tuning:
         elif (self.alert):
             self.clear_alert()
 
-    def save(self):
-        return (self.index,)
-
     def show_view(self, display):
         display.show_text(tunings[self.index])
 
