@@ -183,16 +183,7 @@ get a good finish...
 
 ---
 
-![Fully assembled pedal](img/build_12.jpg)
-
-Finally done. Also found some white waterslide decals to add lettering (designed for model aeroplanes;
-apparently this is the font used for RAF markings in WWII, but it looked modern enough for me).
-
-Just waiting for some screws to arrive so I can attach the display cover...
-
----
-
-![Pedal operating on pedal board](img/build_13.jpg)
+![Pedal operating on pedal board](img/build_12.jpg)
 
 Full electrical/noise test with everything plugged together on the pedalboard, including:
 * All the guitar signal connections
@@ -206,6 +197,14 @@ to arrive so I can neaten it up).
 I was pleased to find that nothing adds any extra noise into the guitar signal, apart from the PC
 (which was already an issue with the existing pedals, and the USB isolator solves).
 
-The new pedal produces a bit of RF noise (probably not surprising, given all the electronics and the
+The new pedal produces a little RF noise (probably not surprising, given all the electronics and the
 unshielded plastic enclosure) but this is only picked up if I put my guitar literally within a few
 inches of it, and given that my pedalboard is on the floor, I'm unlikely to play in that position.
+
+---
+
+![Fully assembled pedal](img/build_13.jpg)
+
+Finally done. The last components to arrive were the black hex screws to secure the cover. I also
+found some white waterslide decals to add lettering (designed for model aeroplanes; apparently this
+is the font used for RAF markings in WWII, but it looked modern enough for my purposes).
