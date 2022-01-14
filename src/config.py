@@ -12,7 +12,6 @@ FOOTSWITCH_PIN=15
 MIDI_UART_PIN_TX=16
 MIDI_UART_PIN_RX=17
 MIDI_CHANNEL_IN=0
-MIDI_CHANNEL_OUT=0
 
 def init_components(midi):
     return [M5(midi), Tuning(midi), Guitar()]

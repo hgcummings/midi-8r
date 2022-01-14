@@ -1,8 +1,7 @@
 from .midi_message_types import *
 
 class MidiStreamReader:
-    def __init__(self, channel, message_handler):
-        self.channel = channel
+    def __init__(self, message_handler):
         self.handler = message_handler
         self.buffer = memoryview(bytearray(3))
         self.msg_length = 0
@@ -26,11 +25,10 @@ class MidiStreamReader:
             self.buffer[self.msg_length] = next_byte
             self.msg_length += 1
         
-            # Check if we have a complete message we want to handle
-            if self.buffer[0] & 15 == self.channel: # (Ignore anything not on our channel)
-                if self.msg_length == 2 and (self.buffer[0] >> 4) == PROGRAM_CHANGE:
-                    self.handler.on_program_change(self.buffer[1])
-                    self.msg_length = 0
-                elif self.msg_length == 3 and (self.buffer[0] >> 4) == CONTROL_CHANGE:
-                    self.handler.on_control_change(self.buffer[1], self.buffer[2])
-                    self.msg_length = 0
+            # Check if we have a complete message that we can handle
+            if self.msg_length == 2 and (self.buffer[0] >> 4) == PROGRAM_CHANGE:
+                self.handler.on_program_change(self.buffer[0] & 15, self.buffer[1])
+                self.msg_length = 0
+            elif self.msg_length == 3 and (self.buffer[0] >> 4) == CONTROL_CHANGE:
+                self.handler.on_control_change(self.buffer[0] & 15, self.buffer[1], self.buffer[2])
+                self.msg_length = 0

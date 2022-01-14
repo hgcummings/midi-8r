@@ -8,10 +8,8 @@ RX_BUFFER_SIZE = 4096 # Should be greater than MIDI_BAUD_RATE / READ_INTERVAL_MS
 
 class MidiOverUart:
     """Provides external MIDI in/out via UART"""
-    def __init__(self, tx_pin, rx_pin, out_channel, in_channel):
+    def __init__(self, tx_pin, rx_pin):
         self.uart = UART(0,baudrate=MIDI_BAUD_RATE,tx=Pin(tx_pin),rx=Pin(rx_pin), rxbuf=RX_BUFFER_SIZE)
-        self.in_channel = in_channel
-        self.out_channel = out_channel
         self.rx_buf = memoryview(bytearray(256))
         self.tx_buf = memoryview(bytearray(3))
 
@@ -21,9 +19,6 @@ class MidiOverUart:
             self.midi_reader.consume(self.rx_buf[:length])
 
     def __send_message(self, msg_type, channel, data, data2=None):
-        if (channel == None):
-            channel = self.out_channel
-
         self.tx_buf[0] = (msg_type << 4) | channel
         self.tx_buf[1] = data
         length = 2
@@ -34,7 +29,7 @@ class MidiOverUart:
         self.uart.write(self.tx_buf[:length])
 
     def register_handler(self, handler):
-        self.midi_reader = MidiStreamReader(self.in_channel, handler)
+        self.midi_reader = MidiStreamReader(handler)
 
         # UART.irq isn't implemented for rp2 yet, so use polling rather than interrupt
         #
@@ -46,8 +41,8 @@ class MidiOverUart:
     def send_raw_bytes(self, raw_bytes):
         self.uart.write(raw_bytes)
 
-    def send_program_change(self, patch, channel=None):
+    def send_program_change(self, channel, patch):
         self.__send_message(PROGRAM_CHANGE, channel, patch)
 
-    def send_control_change(self, controller, value, channel=None):
+    def send_control_change(self, channel, controller, value):
         self.__send_message(CONTROL_CHANGE, channel, controller, value)

@@ -1,3 +1,4 @@
+MIDI_CHANNEL = 0 # Zero-indexed, so this is MIDI Channel 1
 MIDI_CC_TUNER_ON_OFF = 16
 
 tunings = ["E std.","drp D"]
@@ -29,12 +30,12 @@ class Tuning:
 
     def _set_alert(self):
         self.alert = True
-        self.midi_out.send_control_change(MIDI_CC_TUNER_ON_OFF, 127)
+        self.midi_out.send_control_change(MIDI_CHANNEL, MIDI_CC_TUNER_ON_OFF, 127)
 
     def clear_alert(self):
         self.alert = False
         self.last_acknowledged_tuning = self.index
-        self.midi_out.send_control_change(MIDI_CC_TUNER_ON_OFF, 0)
+        self.midi_out.send_control_change(MIDI_CHANNEL, MIDI_CC_TUNER_ON_OFF, 0)
 
     def edit(self, display):
         self.__show_edit(display)

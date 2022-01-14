@@ -15,8 +15,9 @@ class PatchEditor(MidiMessageHandler):
     Delegates to `components` for showing or editing parameters,
     passing through events from the control panel to enable this
     """
-    def __init__(self, storage_root, midi, control, display, properties):
+    def __init__(self, storage_root, midi_channel, midi, control, display, properties):
         self.storage_root = storage_root
+        self.midi_channel = midi_channel
 
         self.props = properties
 
@@ -29,10 +30,11 @@ class PatchEditor(MidiMessageHandler):
         control.observe_footswitch(self.on_footswitch)
         control.observe_button(self.on_button)
 
-    def on_program_change(self, patch):
-        self.current_patch = patch
-        self.load_patch()
-        self.state.set_component(self.menu)
+    def on_program_change(self, channel, patch):
+        if channel == self.midi_channel:
+            self.current_patch = patch
+            self.load_patch()
+            self.state.set_component(self.menu)
 
     def on_value_change(self, value):
         self.state.update_value(value)

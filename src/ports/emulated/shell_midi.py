@@ -9,17 +9,17 @@ class ShellMidi:
         patch = int(value)
         if (patch >= 0 and patch < 128):
             if (self.handler):
-                self.handler.on_program_change(patch)
+                self.handler.on_program_change(0, patch)
         else:
             print("Invalid patch")
     
     def register_handler(self, handler):
         self.handler = handler
 
-    def send_program_change(self, patch, channel=0):
+    def send_program_change(self, channel, patch):
         print("C{}PC{}".format(channel, patch))
         
-    def send_control_change(self, controller, value, channel=0):
+    def send_control_change(self, channel, controller, value):
         print("C{}CC{}V{}".format(channel, controller, value))
 
     def send_raw_bytes(self, raw_bytes):

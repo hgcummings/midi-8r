@@ -19,6 +19,7 @@ display = Display(RgbMatrix(RGB_MATRIX_PIN_DT, RGB_MATRIX_ROWS, RGB_MATRIX_COLS,
 
 core = PatchEditor(
     "/storage",
+    MIDI_CHANNEL_IN,
     midi,
     ControlPanel(ENCODER_PIN_BTN, ENCODER_PIN_CLK, ENCODER_PIN_DT, FOOTSWITCH_PIN),
     display,

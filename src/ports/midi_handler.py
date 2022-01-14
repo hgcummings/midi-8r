@@ -1,11 +1,11 @@
 class MidiMessageHandler:
-    def on_program_change(self, patch):
+    def on_program_change(self, channel, patch):
         '''
         Handle an incoming program change message
         '''
         pass
         
-    def on_control_change(self, number, value):
+    def on_control_change(self, channel, number, value):
         '''
         Handle an incoming control change message
         '''

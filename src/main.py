@@ -12,10 +12,11 @@ from adapters.midi_thru import MidiThru
 from adapters.display import Display
 from config import *
 
-midi = MidiThru(MidiOverUart(MIDI_UART_PIN_TX, MIDI_UART_PIN_RX, MIDI_CHANNEL_IN, MIDI_CHANNEL_OUT))
+midi = MidiThru(MidiOverUart(MIDI_UART_PIN_TX, MIDI_UART_PIN_RX))
 
 core = PatchEditor(
     "/storage",
+    MIDI_CHANNEL_IN,
     midi,
     ControlPanel(ENCODER_PIN_BTN, ENCODER_PIN_CLK, ENCODER_PIN_DT, FOOTSWITCH_PIN),
     Display(RgbMatrix(RGB_MATRIX_PIN_DT, RGB_MATRIX_ROWS, RGB_MATRIX_COLS)),
