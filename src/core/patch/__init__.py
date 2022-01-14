@@ -54,7 +54,7 @@ class PatchEditor(MidiMessageHandler):
             with open(self.patch_path(), "rb") as f:
                 for prop in self.props:
                     prop.load(struct.unpack(prop.format, f.read(struct.calcsize(prop.format))))
-        except OSError:
+        except (OSError, ValueError):
             with open(self.patch_path(), "wb") as f:
                 for prop in self.props:
                     empty = bytearray(struct.calcsize(prop.format))
