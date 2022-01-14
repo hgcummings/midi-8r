@@ -7,22 +7,24 @@ class MidiStreamReader:
         self.buffer = memoryview(bytearray(3))
         self.msg_length = 0
         
-    def write(self, next_bytes):
+    def consume(self, next_bytes):
+        '''
+        Consume bytes from the underlying stream.
+
+        The important invariant here is that each byte must be handled exactly once
+        (even for unrecognised message types). This allows the handler to correctly
+        implement MIDI pass-through functionality if needed.
+        '''
         for next_byte in next_bytes:
-            if next_byte > 127: # Status byte; start of a new message
-                if (self.msg_length > 0): # A message in the buffer we haven't handled yet
-                    self.handler.on_unknown_message(self.buffer[:self.msg_length])
-                self.buffer[0] = next_byte
-                self.msg_length = 1
-            else: # Data byte; part of an already-started message
-                if self.msg_length == len(self.buffer):
-                    # Already filled the buffer without recognising the message
-                    self.handler.on_unknown_message(self.buffer)
-                    self.buffer[0] = next_byte
-                    self.msg_length = 1
-                else:
-                    self.buffer[self.msg_length] = next_byte
-                    self.msg_length += 1
+            if self.msg_length == len(self.buffer) or (next_byte > 127 and self.msg_length > 0):
+                # We've filled the buffer without recognising a message, or we're being given a
+                # status byte (start of new message) while the current message is unrecognised.
+                # So handle the current buffer contents as an unknown message, then reset.
+                self.handler.on_unknown_message(self.buffer[:self.msg_length])
+                self.msg_length = 0
+
+            self.buffer[self.msg_length] = next_byte
+            self.msg_length += 1
         
             # Check if we have a complete message we want to handle
             if self.buffer[0] & 15 == self.channel: # (Ignore anything not on our channel)

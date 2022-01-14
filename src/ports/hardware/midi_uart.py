@@ -18,7 +18,7 @@ class MidiOverUart:
     def __recv_midi(self, *_):
         while self.uart.any():
             length = self.uart.readinto(self.rx_buf)
-            self.midi_reader.write(self.rx_buf[:length])
+            self.midi_reader.consume(self.rx_buf[:length])
 
     def __send_message(self, msg_type, channel, data, data2=None):
         if (channel == None):
