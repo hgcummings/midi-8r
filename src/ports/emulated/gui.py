@@ -1,7 +1,5 @@
 import tkinter as tk
 from tkinter.constants import DISABLED
-from adafruit_midi.control_change import ControlChange
-from adafruit_midi.program_change import ProgramChange
 from functools import partial
 
 # Pedal dimensions in mm: 70x110
@@ -100,16 +98,17 @@ class Application:
         self.footswitch_observer = observer
 
     # MIDI implementation
-    def observe_messages(self, observer):
-        self.midi_observer = observer
+    def register_handler(self, handler):
+        self.handler = handler
 
-    def send_message(self, message, channel=0):
-        if (isinstance(message, ProgramChange)):
-            self.midi_out_text.set("C{}PC{}".format(channel, message.patch))
-        elif (isinstance(message, ControlChange)):
-            self.midi_out_text.set("C{}CC{}V{}".format(channel, message.control, message.value))
-        else:
-            self.midi_out_text.set("[msg]")
+    def send_program_change(self, patch, channel=0):
+        self.midi_out_text.set("C{}PC{}".format(channel, patch))
+        
+    def send_control_change(self, controller, value, channel=0):
+        self.midi_out_text.set("C{}CC{}V{}".format(channel, controller, value))
+
+    def send_raw_bytes(self, raw_bytes):
+        self.midi_out_text.set("[Length: {}]", len(raw_bytes))
 
     # UI
     def show_ui(self):
@@ -119,8 +118,8 @@ class Application:
         patch = int(self.midi_in.get())
         if (patch >= 0 and patch < 128):
             self.midi_in.configure(background="white")
-            if (self.midi_observer):
-                self.midi_observer(ProgramChange(patch))
+            if (self.handler):
+                self.handler.on_program_change(patch)
         else:
             self.midi_in.configure(background="red")
 

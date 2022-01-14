@@ -1,6 +1,3 @@
-from adafruit_midi.control_change import ControlChange
-from adafruit_midi.program_change import ProgramChange
-
 MIDI_CHANNEL = 1 # Adafruit MIDI library is zero-indexed, so this is MIDI Channel 2
 MIDI_CC_ON_OFF = 11
 
@@ -70,5 +67,5 @@ class M5:
             colour=colour)
 
     def __update_midi(self):
-        self.midi_out(ProgramChange(self.preset - 1), channel=MIDI_CHANNEL)
-        self.midi_out(ControlChange(MIDI_CC_ON_OFF, 127 if self.init_on else 0), channel=MIDI_CHANNEL)
+        self.midi_out.send_program_change(self.preset - 1, channel=MIDI_CHANNEL)
+        self.midi_out.send_control_change(MIDI_CC_ON_OFF, 127 if self.init_on else 0, channel=MIDI_CHANNEL)

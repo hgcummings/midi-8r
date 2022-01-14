@@ -5,14 +5,14 @@ Uses real hardware ports (display, control panel, MIDI) with a fully-featured co
 """
 
 from core.patch import PatchEditor
-from ports.hardware.external_midi import ExternalMidi
+from ports.hardware.midi_uart import MidiOverUart
 from ports.hardware.control_panel import ControlPanel
 from ports.hardware.rgb_matrix import RgbMatrix
 from adapters.midi_thru import MidiThru
 from adapters.display import Display
 from config import *
 
-midi = MidiThru(ExternalMidi(MIDI_UART_PIN_TX, MIDI_UART_PIN_RX, MIDI_CHANNEL_IN, MIDI_CHANNEL_OUT))
+midi = MidiThru(MidiOverUart(MIDI_UART_PIN_TX, MIDI_UART_PIN_RX, MIDI_CHANNEL_IN, MIDI_CHANNEL_OUT))
 
 core = PatchEditor(
     "/storage",

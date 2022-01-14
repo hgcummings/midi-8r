@@ -7,7 +7,7 @@ Uses real hardware ports for the display and control panel, with shell-emulated 
 """
 
 from core.patch import PatchEditor
-from ports.emulated.shell import ShellMidi
+from ports.emulated.shell_midi import ShellMidi
 from ports.hardware.rgb_matrix import RgbMatrix
 from ports.hardware.control_panel import ControlPanel
 from adapters.display import Display

@@ -1,10 +1,11 @@
+import struct
+
+from ports.midi_handler import MidiMessageHandler
 from .boot_screen import BootScreen
 from .property_menu import PropertyMenu
 from .ui_state_manager import UiStateManager
-from adafruit_midi.program_change import ProgramChange
-import struct
 
-class PatchEditor:
+class PatchEditor(MidiMessageHandler):
     """
     Core for working with patches
 
@@ -23,16 +24,15 @@ class PatchEditor:
         self.state = UiStateManager(BootScreen(), control, display)
         self.current_patch = None
         
-        midi.observe_messages(self.on_midi_message)
+        midi.register_handler(self)
         control.observe_value(self.on_value_change)
         control.observe_footswitch(self.on_footswitch)
         control.observe_button(self.on_button)
 
-    def on_midi_message(self, message):
-        if (isinstance(message, ProgramChange)):
-            self.current_patch = message.patch
-            self.load_patch()
-            self.state.set_component(self.menu)
+    def on_program_change(self, patch):
+        self.current_patch = patch
+        self.load_patch()
+        self.state.set_component(self.menu)
 
     def on_value_change(self, value):
         self.state.update_value(value)

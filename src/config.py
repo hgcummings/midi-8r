@@ -15,4 +15,4 @@ MIDI_CHANNEL_IN=0
 MIDI_CHANNEL_OUT=0
 
 def init_components(midi):
-    return [M5(midi.send_message), Tuning(midi.send_message), Guitar()]
+    return [M5(midi), Tuning(midi), Guitar()]

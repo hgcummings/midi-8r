@@ -1,8 +1,9 @@
-from adafruit_midi.program_change import ProgramChange
+from ports.midi_handler import MidiMessageHandler
+
 
 OUTPUT_PATCH_RANGE = 24
 
-class Diagnostic:
+class Diagnostic(MidiMessageHandler):
     """
     Simple core that maps MIDI program change messages
 
@@ -20,18 +21,17 @@ class Diagnostic:
 
         self.input_patch = None
         self.output_patch = None
-        self.midi.observe_messages(self.on_midi_message)
+        self.midi.register_handler(self)
 
         self.control.observe_value(self.on_value_change)
         self.control.observe_button(self.on_button)
 
         self.control.set_range_and_value(0, 0, OUTPUT_PATCH_RANGE - 1)
 
-    def on_midi_message(self, message):
-        if (isinstance(message, ProgramChange)):
-            preset = self.storage.get_preset(message.patch)
-            self.update_patches(message.patch, preset)
-            self.control.set_value(preset)
+    def on_program_change(self, patch):
+        preset = self.storage.get_preset(patch)
+        self.update_patches(patch, preset)
+        self.control.set_value(preset)
 
     def update_patches(self, input_patch, output_patch):
         changed = False
@@ -43,7 +43,7 @@ class Diagnostic:
         output_patch = output_patch % OUTPUT_PATCH_RANGE
         if (output_patch != self.output_patch):
             self.output_patch = output_patch
-            self.midi.send_message(ProgramChange(output_patch))
+            self.midi.send_program_change(output_patch)
             changed = True
 
         if changed:
