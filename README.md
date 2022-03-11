@@ -68,7 +68,7 @@ There are similar products on the market, although none with the exact same func
 * [MIDI Solutions Event Processor Plus](http://www.midisolutions.com/prodepp.htm)
   A below-board pedal (no buttons or display) supporting up to 32 MIDI mapping rules
 
-## Related projects
+## Similar projects
 
 * [galczo5/open-midi-controller](https://github.com/galczo5/open-midi-controller)
   Arduino-based MIDI controller. Has different goals to this project (designed to trigger
