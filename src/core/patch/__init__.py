@@ -1,8 +1,8 @@
 import struct
 
 from ports.midi_handler import MidiMessageHandler
-from .boot_screen import BootScreen
-from .property_menu import PropertyMenu
+from components.boot_screen import BootScreen
+from components.property_menu import PropertyMenu
 from .ui_state_manager import UiStateManager
 
 class PatchEditor(MidiMessageHandler):
