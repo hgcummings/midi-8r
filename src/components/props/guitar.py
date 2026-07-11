@@ -1,8 +1,3 @@
-import json
-
-with open(__file__.replace("guitar.py", "guitars.json"), encoding="utf8") as f:
-    guitars = json.load(f)
-
 class Guitar:
     """
     Component for selecting the guitar (and pickup) used with this patch
@@ -10,9 +5,10 @@ class Guitar:
     When a patch is first loaded, if the guitar/pickup changes, raises an alert
     """
     format = "BB"
-    default = (1, guitars[1]["default"])
 
-    def __init__(self, *_):
+    def __init__(self, guitars):
+        self.guitars = guitars
+        self.default = (1, guitars[1]["default"])
         self.last_acknowledged = self.default
         self.alert = False
         self.pickup_image = Guitar.PickupImage(guitars)
@@ -35,12 +31,12 @@ class Guitar:
 
     def show_view(self, display):
         if (len(self.__pickups()) == 1 or (self.alert and self.last_acknowledged[0] != self.guitar)):
-            display.show_text(guitars[self.guitar]["name"])
+            display.show_text(self.guitars[self.guitar]["name"])
         else:
             self.__show_pickup(display)
 
     def __guitar(self):
-        return guitars[self.guitar]
+        return self.guitars[self.guitar]
 
     def __pickups(self):
         return self.__guitar()["pickups"]
@@ -54,14 +50,14 @@ class Guitar:
 
     def edit(self, display):
         self.__show_edit(display)
-        return (0, self.pickup, len(self.__pickups()) - 1) if self.edit_pickup else (1, self.guitar, len(guitars) - 1)
+        return (0, self.pickup, len(self.__pickups()) - 1) if self.edit_pickup else (1, self.guitar, len(self.guitars) - 1)
 
     def update_value(self, value, display):
         if (self.edit_pickup):
             self.pickup = value
         else:
             self.guitar = value
-            self.pickup = guitars[self.guitar]["default"]
+            self.pickup = self.guitars[self.guitar]["default"]
         self.__show_edit(display)
 
     def switch(self, *_):
@@ -84,7 +80,7 @@ class Guitar:
         if self.edit_pickup:
             self.__show_pickup(display, colour=colour)
         else:
-            display.show_text(guitars[self.guitar]["name"],colour=colour)
+            display.show_text(self.guitars[self.guitar]["name"],colour=colour)
 
     def __show_pickup(self, display, colour=(255,255,255)):
         self.pickup_image.set(self.guitar, self.pickup, colour)
