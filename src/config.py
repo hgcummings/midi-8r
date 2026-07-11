@@ -1,4 +1,6 @@
 from components.m5 import M5
+from components.cerberus.cab_sim import CabSim
+from components.cerberus.reverb import Reverb
 from components.tuning import Tuning
 from components.guitar import Guitar
 
@@ -14,4 +16,4 @@ MIDI_UART_PIN_RX=17
 MIDI_CHANNEL_IN=0
 
 def init_components(midi):
-    return [M5(midi), Tuning(midi), Guitar()]
+    return [CabSim(midi), Reverb(midi), Tuning(midi), Guitar()]

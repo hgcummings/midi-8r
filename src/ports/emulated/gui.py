@@ -108,7 +108,7 @@ class Application:
         self.midi_out_text.set("C{}CC{}V{}".format(channel, controller, value))
 
     def send_raw_bytes(self, raw_bytes):
-        self.midi_out_text.set("[Length: {}]", len(raw_bytes))
+        self.midi_out_text.set("[Length: {}]".format(len(raw_bytes)))
 
     # UI
     def show_ui(self):

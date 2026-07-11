@@ -27,6 +27,7 @@ class PropertyMenu:
         if (self.props[self.current_prop].alert):
             self.props[self.current_prop].clear_alert()
             self.__show_edit(display)
+        self.props[self.current_prop].switch(display)
 
     def edit(self, display):
         self.__show_edit(display)

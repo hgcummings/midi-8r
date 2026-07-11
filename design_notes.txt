@@ -33,3 +33,30 @@ On preset change:
     - If tuner enabled, footswitch disables tuner and updates last acknowledged tuning
  - Display pickup selection for 3(?) seconds
  - Display parts in song (i.e. which prests are used in this song for which parts)
+
+ 2026:
+
+ Rotary encoder behaviour on EQ2:
+ - Turn adjusts current property
+ - Push-and-turn moves between properties
+
+ Components in rehearsal (non-preset) mode:
+ - IR
+ - Reverb
+ - No edit/save distinction, just send directly
+ - Rotary encoder works like on EQ2 (see above)
+
+ Components in preset mode:
+ - IR
+ - Reverb
+ - Guitar/pickup
+ - Tuning
+
+Display
+ - Orange in rehearsal mode, white/green/red in preset mode (as current)
+
+ Refactor:
+ - Components have near-identical logic for picking the colour to display their text
+ - UI manager class also a bit confusing
+ - Need to make sure this still works for the guitar/pickup component
+ - Make the preset config classes smaller, with a single component wrapping them
