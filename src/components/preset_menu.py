@@ -1,45 +1,46 @@
 class PresetMenu:
     """
-    Menu component that supports navigation between multiple preset components
+    Screen for navigating between the preset parameters
 
-    Display order is determined by components flagging alerts,
-    then by the order in which components were initially provided
+    Display order is determined by parameters flagging alerts,
+    then by the order in which parameters were initially provided
 
-    The rotary encoder is used to select components to view or edit
+    The rotary encoder is used to select a parameter to view or edit
 
     The footswitch is used to acknowledge (and clear) an alert
-    from the component currently being displayed
+    from the parameter currently being displayed
     """
     def __init__(self, params):
         self.params = params
         self.current_param = 0
-        self.last_selected_prop = 0
+        self.last_selected_param = 0
 
     def set_nav(self, nav):
         self._nav = nav
 
-    def __show_edit(self, display):
-        self.current_param = self.last_selected_prop
+    def __render(self, display):
+        self.current_param = self.last_selected_param
         for i, param in enumerate(self.params):
             if param.alert:
                 self.current_param = i
                 break
-        self.params[self.current_param].show_view(display)
+        self.params[self.current_param].render_view(display)
 
     def switch(self, display):
         if (self.params[self.current_param].alert):
             self.params[self.current_param].clear_alert()
-            self.__show_edit(display)
+            self.__render(display)
+            return
         self.params[self.current_param].switch(display)
 
-    def edit(self, display):
-        self.__show_edit(display)
+    def activate(self, display):
+        self.__render(display)
         return (0, self.current_param, len(self.params) - 1)
 
     def update_value(self, value, display):
-        self.last_selected_prop = value
+        self.last_selected_param = value
         self.current_param = value
-        self.params[self.current_param].show_view(display)
+        self.params[self.current_param].render_view(display)
 
     def button_down(self, *_):
         pass

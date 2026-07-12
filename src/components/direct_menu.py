@@ -1,6 +1,13 @@
 from components import colours
+from components.params import load_empty
 
 class DirectMenu:
+    """
+    Screen for editing parameters directly (rehearsal mode), without saving to a patch
+
+    The rotary encoder edits the current parameter's value; push-and-turn switches
+    between parameters
+    """
     def __init__(self, params):
         self.params = params
         self.current_param = 0
@@ -12,8 +19,8 @@ class DirectMenu:
     def set_nav(self, nav):
         self._nav = nav
 
-    def edit(self, display):
-        self.__show_edit(display)
+    def activate(self, display):
+        self.__render(display)
         if self.switching_params:
             return (0, self.current_param, len(self.params) - 1)
         else:
@@ -24,14 +31,14 @@ class DirectMenu:
             self.current_param = value
         else:
             self.params[self.current_param].update_value(value)
-        self.__show_edit(display)
+        self.__render(display)
 
-    def __show_edit(self, display):
+    def __render(self, display):
         self.params[self.current_param].render(display, colours.REHEARSAL)
 
     def switch(self, display):
         self.params[self.current_param].switch()
-        self.__show_edit(display)
+        self.__render(display)
 
     def button_down(self, *_):
         self.switching_params = True

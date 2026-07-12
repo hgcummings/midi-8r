@@ -2,11 +2,11 @@ class Navigator:
     """
     Owns all mutable state.
 
-    Tracks a current component and an optional previous one, routing input events to the
-    current component. Components navigate by calling enter, exit, and refresh on the
+    Tracks a current screen and an optional previous one, routing input events to the
+    current screen. Screens navigate by calling enter, exit, and refresh on the
     navigator they receive via set_nav when activated.
     """
-    def __init__(self, initial_component, control, display, on_save):
+    def __init__(self, initial_screen, control, display, on_save):
         self._control = control
         self._display = display
         self._on_save = on_save
@@ -18,18 +18,18 @@ class Navigator:
         control.observe_button_down(self._on_button_down)
         control.observe_button_up(self._on_button_up)
 
-        self.set_component(initial_component)
+        self.set_screen(initial_screen)
 
-    def set_component(self, component):
-        """Replace the current component. Called by PatchEditor on program change."""
+    def set_screen(self, screen):
+        """Replace the current screen. Called by PatchEditor on program change."""
         self._previous = None
-        self._current = component
-        self._activate(component)
+        self._current = screen
+        self._activate(screen)
 
-    def enter(self, component):
+    def enter(self, screen):
         self._previous = self._current
-        self._current = component
-        self._activate(component)
+        self._current = screen
+        self._activate(screen)
 
     def exit(self):
         self._current = self._previous
@@ -40,9 +40,9 @@ class Navigator:
     def refresh(self):
         self._activate(self._current)
 
-    def _activate(self, component):
-        self._control.set_range_and_value(*component.edit(self._display))
-        component.set_nav(self)
+    def _activate(self, screen):
+        self._control.set_range_and_value(*screen.activate(self._display))
+        screen.set_nav(self)
 
     def _on_value(self, value):
         self._current.update_value(value, self._display)

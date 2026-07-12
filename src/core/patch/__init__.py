@@ -26,7 +26,7 @@ class PatchEditor(MidiMessageHandler):
         if channel == self.midi_channel:
             self.current_patch = patch
             self.load_patch()
-            self.nav.set_component(self.menu)
+            self.nav.set_screen(self.menu)
 
     def load_patch(self):
         try:

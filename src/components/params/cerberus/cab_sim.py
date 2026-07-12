@@ -14,8 +14,7 @@ MODELS = [
 
 class CabSim:
     """
-    Simple param editor for selecting the cab sim (IR curve) on the NUX Cerberus
-    Not a full component in itself. Needs to be wrapped in PresetEditor or DirectMenu
+    Parameter for selecting the cab sim (IR curve) on the NUX Cerberus
     """
     format = "B"
 

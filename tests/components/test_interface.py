@@ -49,7 +49,7 @@ def test_screen_interface():
         for cls in top_level_classes(module_name):
             print(cls)
             assert has_method(cls, "set_nav")
-            assert has_method(cls, "edit")
+            assert has_method(cls, "activate")
             assert has_method(cls, "update_value")
             assert has_method(cls, "switch")
             assert has_method(cls, "button_down")
