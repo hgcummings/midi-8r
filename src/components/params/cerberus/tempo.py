@@ -1,6 +1,6 @@
+from . import MIDI_CHANNEL
 from components import colours
 
-MIDI_CHANNEL = 0
 MIDI_CC_NRPN_LSB = 98
 MIDI_CC_NRPN_MSB = 99
 MIDI_CC_DATA_LSB = 38

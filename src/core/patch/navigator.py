@@ -20,6 +20,16 @@ class Navigator:
 
         self.set_screen(initial_screen)
 
+    @property
+    def _current(self):
+        return self.__current
+
+    @_current.setter
+    def _current(self, screen):
+        self.__current = screen
+        if screen is not None:
+            screen.set_nav(self)
+
     def set_screen(self, screen):
         """Replace the current screen. Called by PatchEditor on program change."""
         self._previous = None
@@ -42,7 +52,6 @@ class Navigator:
 
     def _activate(self, screen):
         self._control.set_range_and_value(*screen.activate(self._display))
-        screen.set_nav(self)
 
     def _on_value(self, value):
         self._current.update_value(value, self._display)

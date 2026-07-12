@@ -1,3 +1,5 @@
+from . import MIDI_CHANNEL
+
 SHIMMER_LOCATION = {'off': 0x10, 'hall': 0x14, 'plate': 0x18, 'spring': 0x1c}
 
 MIDI_CC_REVERB = 37
@@ -58,7 +60,7 @@ class Reverb:
         display.show_text(NAMES[self.state], colour=colour)
 
     def __set_reverb_type(self, id):
-        self.midi_out.send_control_change(1, MIDI_CC_REVERB, id)
+        self.midi_out.send_control_change(MIDI_CHANNEL, MIDI_CC_REVERB, id)
 
     def __set_shimmer_location(self, where):
         # Note: this immediately persists to the current preset,

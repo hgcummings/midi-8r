@@ -11,7 +11,6 @@ class M5:
     Footswitch selects whether the M5 effect should be initially on or off whenever this patch is loaded
     """
     format = "b"
-    alert = False
 
     def __init__(self, midi_out):
         self.midi_out = midi_out

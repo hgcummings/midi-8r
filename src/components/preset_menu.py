@@ -19,21 +19,25 @@ class PresetMenu:
         self._nav = nav
 
     def __render(self, display):
+        self.params[self.current_param].render_view(display)
+
+    def __update_current_param(self):
         self.current_param = self.last_selected_param
         for i, param in enumerate(self.params):
             if param.alert:
                 self.current_param = i
                 break
-        self.params[self.current_param].render_view(display)
 
     def switch(self, display):
         if (self.params[self.current_param].alert):
             self.params[self.current_param].clear_alert()
+            self.__update_current_param()
             self.__render(display)
-            return
-        self.params[self.current_param].switch(display)
+        else:
+            self.params[self.current_param].switch(display)
 
     def activate(self, display):
+        self.__update_current_param()
         self.__render(display)
         return (0, self.current_param, len(self.params) - 1)
 

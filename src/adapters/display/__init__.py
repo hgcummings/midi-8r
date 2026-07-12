@@ -8,13 +8,13 @@ class Display:
         self.pixel_display.clear_buffer()
         self.pixel_display.show_buffer()
 
-    def show_text(self, text, line2_text=None, colour=None, indent=0, line2_indent=0):
+    def show_text(self, text, line2_text=None, colour=None, indent=0, line2_indent=0, line2_colour=None):
         if colour is None:
             colour = (255, 255, 255)
         self.pixel_display.clear_buffer()
         if line2_text:
             render_line(self.pixel_display, indent, 0, text, colour)
-            render_line(self.pixel_display, line2_indent, 5, line2_text, colour)
+            render_line(self.pixel_display, line2_indent, 5, line2_text, line2_colour if line2_colour is not None else colour)
         else:
             render_line(self.pixel_display, indent, 2, text, colour)
         self.pixel_display.show_buffer()
@@ -30,9 +30,3 @@ class Display:
                 self.pixel_display.set_pixel(x + offset_x, y + offset_y, *image[y][x])
         self.pixel_display.show_buffer()
 
-    def show_patches(self, patch_in, patch_out, saved):
-        self.pixel_display.clear_buffer()
-        render_line(self.pixel_display, 0, 0, "▶{}".format(patch_in), (255,255,255))
-        render_line(self.pixel_display, 0, 5, "◀{}".format(patch_out),
-                                        (32, 255, 32) if saved else (127, 0, 0))
-        self.pixel_display.show_buffer()

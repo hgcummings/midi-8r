@@ -1,4 +1,5 @@
-MIDI_CHANNEL = 0
+from . import MIDI_CHANNEL
+
 MIDI_CC = 71
 
 MODELS = [
@@ -24,7 +25,6 @@ class CabSim:
     def load(self, data):
         self.state = data[0]
         self.saved_state = self.state
-        
         self.__update_midi()
 
     def save(self):

@@ -8,7 +8,7 @@ class Diagnostic(MidiMessageHandler):
     Simple core that maps MIDI program change messages
 
     Incoming program change messages specify a patch number from 0-127
-    
+
     Allows an output patch to be selected, and stored against the current input patch
     """
     def __init__(self, midi, control, storage, display) -> None:
@@ -48,16 +48,19 @@ class Diagnostic(MidiMessageHandler):
             changed = True
 
         if changed:
-            self.display.show_patches(
-                self.input_patch,
-                self.output_patch,
-                self.output_patch == self.storage.get_preset(self.input_patch))
+            self.__show_patches(self.output_patch == self.storage.get_preset(self.input_patch))
 
     def on_button(self):
-        if (self.input_patch != None):
+        if (self.input_patch is not None):
             self.storage.set_preset(self.input_patch, self.output_patch)
-            self.display.show_patches(self.input_patch, self.output_patch, True)
+            self.__show_patches(True)
 
     def on_value_change(self, value):
-        if (self.input_patch != None):
+        if (self.input_patch is not None):
             self.update_patches(self.input_patch, value)
+
+    def __show_patches(self, saved):
+        self.display.show_text(
+            "▶{}".format(self.input_patch),
+            line2_text="◀{}".format(self.output_patch),
+            line2_colour=(32, 255, 32) if saved else (127, 0, 0))
