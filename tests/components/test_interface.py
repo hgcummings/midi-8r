@@ -25,12 +25,11 @@ def components_dir():
 
 
 def test_parameter_interface():
-    params_dir = components_dir() / "params"
-    for (_, name, is_pkg) in walk_packages([str(params_dir)]):
+    params_pkg = import_module("src.components.params")
+    for (_, name, is_pkg) in walk_packages(params_pkg.__path__, prefix=params_pkg.__name__ + '.'):
         if is_pkg:
             continue
-        module_name = f"src.components.params.{name}"
-        for cls in top_level_classes(module_name):
+        for cls in top_level_classes(name):
             print(cls)
             assert has_method(cls, "load")
             assert has_method(cls, "save")
