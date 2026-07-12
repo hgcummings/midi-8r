@@ -24,7 +24,7 @@ class Diagnostic(MidiMessageHandler):
         self.midi.register_handler(self)
 
         self.control.observe_value(self.on_value_change)
-        self.control.observe_button(self.on_button)
+        self.control.observe_button_up(self.on_button)
 
         self.control.set_range_and_value(0, 0, OUTPUT_PATCH_RANGE - 1)
 

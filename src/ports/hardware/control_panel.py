@@ -17,7 +17,7 @@ class ControlPanel:
         self.footswitch_observer = self.__noop
         self.rotary.add_listener(self.__on_value_change)        
         
-        self.button = DebouncedMomentarySwitch(pin_btn, self.__on_button)
+        self.button = DebouncedMomentarySwitch(pin_btn, self.__on_button_up, self.__on_button_down)
         self.footswitch = DebouncedMomentarySwitch(pin_fsw, self.__on_footswitch)
 
     def set_range_and_value(self, min, val, max):
@@ -30,9 +30,12 @@ class ControlPanel:
 
     def observe_value(self, observer):
         self.value_observer = observer
-        
-    def observe_button(self, observer):
-        self.button_observer = observer
+
+    def observe_button_down(self, observer):
+        self.button_down_observer = observer
+
+    def observe_button_up(self, observer):
+        self.button_up_observer = observer
 
     def observe_footswitch(self, observer):
         self.footswitch_observer = observer
@@ -40,8 +43,11 @@ class ControlPanel:
     def __on_value_change(self):
         self.value_observer(self.rotary.value())
 
-    def __on_button(self):
-        self.button_observer()
+    def __on_button_down(self):
+        self.button_down_observer()
+
+    def __on_button_up(self):
+        self.button_up_observer()
 
     def __on_footswitch(self):
         self.footswitch_observer()

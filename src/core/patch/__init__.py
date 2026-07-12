@@ -28,7 +28,7 @@ class PatchEditor(MidiMessageHandler):
         midi.register_handler(self)
         control.observe_value(self.on_value_change)
         control.observe_footswitch(self.on_footswitch)
-        control.observe_button(self.on_button)
+        control.observe_button_up(self.on_button)
 
     def on_program_change(self, channel, patch):
         if channel == self.midi_channel:

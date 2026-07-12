@@ -25,11 +25,12 @@ class Application:
         self.cols = cols
         self.display = tk.Canvas(pedal, width=scale_x*(cols+2), height=scale_y*(rows+2), background="black")
         self.display.place(relx=0.5, rely=0.1, anchor = "n")
+        self.encoder_button = tk.BooleanVar()
 
         encoder_frame = tk.Frame(pedal)
         encoder_decr = tk.Button(encoder_frame, text="<", command=partial(self.change_value, -1))
         encoder_decr.grid(column=0, row=0)
-        encoder = tk.Button(encoder_frame, text="O", command=self.press_button)
+        encoder = tk.Checkbutton(encoder_frame, command=self.button_change, variable=self.encoder_button)
         encoder.grid(column=1, row=0)
         encoder_decr = tk.Button(encoder_frame, text=">", command=partial(self.change_value, +1))
         encoder_decr.grid(column=2, row=0)
@@ -56,7 +57,8 @@ class Application:
 
         self.midi_observer = None
         self.value_observer = None
-        self.button_observer = None
+        self.button_down_observer = None
+        self.button_up_observer = None
         self.footswitch_observer = None
 
     # Display implementation
@@ -91,8 +93,11 @@ class Application:
     def set_value(self, value):
         self.value = value
 
-    def observe_button(self, observer):
-        self.button_observer = observer
+    def observe_button_down(self, observer):
+        self.button_down_observer = observer
+
+    def observe_button_up(self, observer):
+        self.button_up_observer = observer
 
     def observe_footswitch(self, observer):
         self.footswitch_observer = observer
@@ -132,9 +137,12 @@ class Application:
         if (self.value_observer):
             self.value_observer(self.value)
 
-    def press_button(self):
-        if (self.button_observer):
-            self.button_observer()
+    def button_change(self):
+        if (self.encoder_button.get()):
+            if (self.button_down_observer):
+                self.button_down_observer()
+        elif (self.button_up_observer):
+            self.button_up_observer()
 
     def press_footswitch(self):
         if (self.footswitch_observer):
