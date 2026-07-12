@@ -54,17 +54,6 @@ class Component:
         """
         self.state = 255 - self.state
         self.__show_edit(display)
-
-    def next(self):
-        """
-        Nominate the next component after the user has finished editing the current value.
-
-        Components should return themselves if they have more values to edit.
-        (In this case, the `edit` method will be invoked again after this method)
-
-        Components should return `None` if they do not need to choose the next component.
-        """
-        return None
     
     def __show_edit(self, display):
         display.show_text(str(self.state),

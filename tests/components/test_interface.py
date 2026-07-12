@@ -26,4 +26,3 @@ def test_interface():
                 assert has_method(attribute, "edit")
                 assert has_method(attribute, "update_value")
                 assert has_method(attribute, "switch")
-                assert has_method(attribute, "next")

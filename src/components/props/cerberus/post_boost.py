@@ -42,7 +42,7 @@ class PostBoost:
         self.saved_on = self.on
         return (self.level * (1 if self.on else -1),)
 
-    def has_changed():
+    def has_changed(self):
         return self.level != self.saved_level or self.on != self.saved_on
 
     def show_text(self, display, colour=(255,255,255)):

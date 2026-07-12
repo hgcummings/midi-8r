@@ -49,7 +49,7 @@ class Reverb:
         self.state = value
         self.__set_reverb_type(self.state)
 
-    def switch(self, display):
+    def switch(self):
         pass
     
     def has_changed(self):

@@ -26,9 +26,6 @@ class Guitar:
         elif (self.alert):
             self.clear_alert()
 
-    def save(self):
-        return (self.index,)
-
     def show_view(self, display):
         if (len(self.__pickups()) == 1 or (self.alert and self.last_acknowledged[0] != self.guitar)):
             display.show_text(self.guitars[self.guitar]["name"])
