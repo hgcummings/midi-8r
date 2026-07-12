@@ -17,6 +17,7 @@ class UiStateManager:
         """Set the current component and update UI state accordingly"""
         self._component = component
         self._control.set_range_and_value(*self._component.edit(self._display))
+        self._component.observe_next(self.set_component)
 
     def update_value(self, value) -> None:
         """Inform the current component of an update to the selected value"""
@@ -26,6 +27,8 @@ class UiStateManager:
         """"Inform the current component of the switch being pressed"""
         self._component.switch(self._display)
 
-    def next(self) -> object:
-        """Ask the current component to nominate the next component"""
-        return self._component.next()
+    def button_down(self) -> None:
+        self._component.button_down(self._display)
+
+    def button_up(self) -> None:
+        self._component.button_up(self._display)

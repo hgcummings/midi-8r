@@ -47,8 +47,15 @@ class CabSim:
     def switch(self, display):
         return None
 
-    def next(self):
-        return None
+    def observe_next(self, next_observer):
+        self._next_observer = next_observer
+
+    def button_down(self, *_):
+        pass
+
+    def button_up(self, *_):
+        self._next_observer(self.parent)
+        self.parent.on_save()
     
     def __show_edit(self, display):
         self.__show_text(display, (32,255,32) if self.state == self.saved_state else (127,0,0))

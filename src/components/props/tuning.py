@@ -48,8 +48,15 @@ class Tuning:
     def switch(self, *_):
         pass
 
-    def next(self):
-        return None
+    def observe_next(self, next_observer):
+        self._next_observer = next_observer
+
+    def button_down(self, *_):
+        pass
+
+    def button_up(self, *_):
+        self._next_observer(self.parent)
+        self.parent.on_save()
 
     def save(self):
         self.last_acknowledged_tuning = self.index

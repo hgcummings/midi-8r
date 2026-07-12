@@ -10,5 +10,11 @@ class BootScreen:
     def switch(self, *_):
         pass
 
-    def next(self):
-        return self
+    def button_down(self, *_):
+        pass
+
+    def button_up(self, *_):
+        pass
+
+    def observe_next(self, next_observer):
+        pass

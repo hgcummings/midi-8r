@@ -21,14 +21,15 @@ class PatchEditor(MidiMessageHandler):
 
         self.props = properties
 
-        self.menu = PropertyMenu(self.props)
+        self.menu = PropertyMenu(self.props, self.on_save)
         self.state = UiStateManager(BootScreen(), control, display)
         self.current_patch = None
-        
+
         midi.register_handler(self)
         control.observe_value(self.on_value_change)
         control.observe_footswitch(self.on_footswitch)
-        control.observe_button_up(self.on_button)
+        control.observe_button_down(self.on_button_down)
+        control.observe_button_up(self.on_button_up)
 
     def on_program_change(self, channel, patch):
         if channel == self.midi_channel:
@@ -42,14 +43,14 @@ class PatchEditor(MidiMessageHandler):
     def on_footswitch(self):
         self.state.switch()
 
-    def on_button(self):
-        next_state = self.state.next()
-        if (next_state == None):
-            # We've exited a property editor, so need to save any changes
-            self.save_patch()
-            next_state = self.menu
+    def on_button_down(self):
+        self.state.button_down()
 
-        self.state.set_component(next_state)
+    def on_button_up(self):
+        self.state.button_up()
+
+    def on_save(self):
+        self.save_patch()
 
     def load_patch(self):
         try:

@@ -63,12 +63,19 @@ class Guitar:
     def switch(self, *_):
         pass
 
-    def next(self):
+    def observe_next(self, next_observer):
+        self._next_observer = next_observer
+
+    def button_down(self, *_):
+        pass
+
+    def button_up(self, *_):
         if self.edit_pickup or len(self.__pickups()) == 1:
-            return None
+            self._next_observer(self.parent)
+            self.parent.on_save()
         else:
             self.edit_pickup = True
-            return self
+            self._next_observer(self)
 
     def save(self):
         self.saved = (self.guitar, self.pickup)

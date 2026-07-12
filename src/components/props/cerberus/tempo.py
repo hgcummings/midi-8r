@@ -54,8 +54,15 @@ class Tempo:
         else:
             self.show_view(display)
 
-    def next(self):
-        return None
+    def observe_next(self, next_observer):
+        self._next_observer = next_observer
+
+    def button_down(self, *_):
+        pass
+
+    def button_up(self, *_):
+        self._next_observer(self.parent)
+        self.parent.on_save()
     
     def __show_edit(self, display):
         self.__show_current(display,

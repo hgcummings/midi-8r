@@ -10,10 +10,14 @@ class PropertyMenu:
     The footswitch is used to acknowledge (and clear) an alert
     from the component currently being displayed
     """
-    def __init__(self, props):
+    def __init__(self, props, on_save):
         self.props = props
         self.current_prop = 0
         self.last_selected_prop = 0
+        self.on_save = on_save
+
+        for prop in self.props:
+            prop.parent = self
 
     def __show_edit(self, display):
         self.current_prop = self.last_selected_prop
@@ -38,5 +42,11 @@ class PropertyMenu:
         self.current_prop = value
         self.props[self.current_prop].show_view(display)
 
-    def next(self):
-        return self.props[self.current_prop]
+    def button_down(self, *_):
+        pass
+
+    def button_up(self, display):
+        self._next_observer(self.props[self.current_prop])
+
+    def observe_next(self, next_observer):
+        self._next_observer = next_observer
