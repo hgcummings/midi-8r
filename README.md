@@ -23,16 +23,16 @@ program change events. This is a modular editor which can support multiple compo
 with different data associated with the patch.
 
 Current components include:
-* [**M5**](src/components/m5.py) for use with the Line 6 M5 pedal. The pedal can have 24 presets.
+* [**M5**](src/components/params/m5.py) for use with the Line 6 M5 pedal. The pedal can have 24 presets.
   This component allows a chosen preset (and initial on/off state) to be stored against each
   of the 128 possible MIDI patches. This component updates the M5 pedal automatically via MIDI.
   This patch could easily be adapted to work with other effects pedals.
-* [**Tuning**](src/components/tuning.py) for selecting the current tuning.
+* [**Tuning**](src/components/params/tuning.py) for selecting the current tuning.
   Will automatically switch on the tuner when selecting a patch that uses a different tuning
-* [**Guitar**](src/components/guitar.py) for storing the guitar and pickup selection
+* [**Guitar**](src/components/params/guitar.py) for storing the guitar and pickup selection
 
-To implement your own component, start from the [template component](src/components/template.py)
-or one of the above. More details on the API can be found in the template component's doc comments.
+To implement your own component, start from the [template](src/components/params/template.py)
+or one of the above. More details on the API can be found in the template's doc comments.
 
 Components and hardware configuration (e.g. GPIO pins used) can be modified in [config.py](src/config.py)
 
@@ -57,6 +57,20 @@ The most expensive component is the RGB LED matrix. These can be found for about
 This pedal can be built entirely with hand tools.
 
 For details on the exact components I used and steps I took, see the [hardware build page](BUILD.md).
+
+## Development
+
+Requires Python 3 with pytest (`pip install pytest`).
+
+Run all tests:
+```
+python -m pytest -s
+```
+
+Run a single test file:
+```
+python -m pytest tests/components/test_interface.py -s
+```
 
 ## Commercial products
 
