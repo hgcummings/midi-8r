@@ -3,6 +3,7 @@ import json
 from components.props.cerberus import PresetEditor
 from components.props.cerberus.cab_sim import CabSim
 from components.props.cerberus.reverb import Reverb
+from components.props.cerberus.post_boost import PostBoost
 from components.props.tuning import Tuning
 from components.props.guitar import Guitar
 
@@ -20,7 +21,14 @@ MIDI_CHANNEL_IN=0
 with open(__file__.replace("config.py", "guitars.json"), encoding="utf8") as f:
     guitars = json.load(f)
 
-def init_components(midi):
+def direct_props(midi):
+    return [
+        CabSim(midi),
+        Reverb(midi),
+        PostBoost(midi)
+    ]
+
+def preset_props(midi):
     return [
         PresetEditor(CabSim(midi)),
         PresetEditor(Reverb(midi)),

@@ -28,18 +28,9 @@ class Component:
         """
         return (self.state,)
 
-    def show_view(self, display):
-        """
-        Display this component's state in view mode
-        """
-        display.show_text(str(self.state))
-
-    def clear_alert(self):
-        """
-        Clear a previously flagged alert, in response to the user acknowledging it.
-        """
-        self.alert = False
-
+    def observe_next(self, next_observer):
+        self._next_observer = next_observer
+    
     def edit(self, display):
         """
         Display this component's state in edit mode.

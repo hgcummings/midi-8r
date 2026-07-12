@@ -20,5 +20,6 @@ core = PatchEditor(
     midi,
     ControlPanel(ENCODER_PIN_BTN, ENCODER_PIN_CLK, ENCODER_PIN_DT, FOOTSWITCH_PIN),
     Display(RgbMatrix(RGB_MATRIX_PIN_DT, RGB_MATRIX_ROWS, RGB_MATRIX_COLS)),
-    init_components(midi)
+    direct_props(midi),
+    preset_props(midi)
 )

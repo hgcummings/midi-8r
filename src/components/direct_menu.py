@@ -1,0 +1,40 @@
+class DirectMenu:
+    def __init__(self, props):
+        self.props = props
+        self.current_prop = 0
+        self.switching_props = False
+
+        for prop in props:
+            prop.load([0])
+
+    def observe_next(self, next_observer):
+        self._next_observer = next_observer
+    
+    def edit(self, display):
+        self.__show_edit(display)
+        if self.switching_props:
+            return (0, self.current_prop, len(self.props) - 1)
+        else:
+            return self.props[self.current_prop].value_range()
+    
+    def update_value(self, value, display):
+        if (self.switching_props):
+            self.current_prop = value
+        else:
+            self.props[self.current_prop].update_value(value)
+        self.__show_edit(display)
+
+    def __show_edit(self, display):
+        self.props[self.current_prop].show_text(display, (255,127,0))
+
+    def switch(self, display):
+        self.props[self.current_prop].switch()
+        self.__show_edit(display)
+    
+    def button_down(self, *_):
+        self.switching_props = True
+        self._next_observer(self)
+
+    def button_up(self, display):
+        self.switching_props = False
+        self._next_observer(self)

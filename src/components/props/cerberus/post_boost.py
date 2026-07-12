@@ -4,7 +4,8 @@ MIDI_CC_ON_OFF = 104
 
 class PostBoost:
     """
-    Component for setting the post-volume boost on the NUX Cerberus pedal
+    Simple prop editor for setting the post-volume boost on the NUX Cerberus pedal
+    Not a full component in itself. Needs to be wrapped in PresetEditor or DirectMenu
     """
     format = "b"
 

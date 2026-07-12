@@ -1,7 +1,7 @@
 import struct
 
 from ports.midi_handler import MidiMessageHandler
-from components.boot_screen import BootScreen
+from components.direct_menu import DirectMenu
 from components.preset_menu import PresetMenu
 from .ui_state_manager import UiStateManager
 
@@ -15,14 +15,14 @@ class PatchEditor(MidiMessageHandler):
     Delegates to `components` for showing or editing parameters,
     passing through events from the control panel to enable this
     """
-    def __init__(self, storage_root, midi_channel, midi, control, display, properties):
+    def __init__(self, storage_root, midi_channel, midi, control, display, direct_props, preset_props):
         self.storage_root = storage_root
         self.midi_channel = midi_channel
 
-        self.props = properties
+        self.props = preset_props
 
         self.menu = PresetMenu(self.props, self.on_save)
-        self.state = UiStateManager(BootScreen(), control, display)
+        self.state = UiStateManager(DirectMenu(direct_props), control, display)
         self.current_patch = None
 
         midi.register_handler(self)

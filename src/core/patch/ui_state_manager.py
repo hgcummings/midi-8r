@@ -28,7 +28,9 @@ class UiStateManager:
         self._component.switch(self._display)
 
     def button_down(self) -> None:
+        """"Inform the current component of the encode button being pressed"""
         self._component.button_down(self._display)
 
     def button_up(self) -> None:
+        """"Inform the current component of the encode button being released"""
         self._component.button_up(self._display)

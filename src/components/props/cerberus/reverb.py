@@ -11,9 +11,8 @@ NAMES = ['Sprng','Plate','Hall','Shimr']
 
 class Reverb:
     """
-    Define the byte structure for storing this component's data.
-    
-    See https://docs.python.org/3/library/struct.html
+    Simple prop editor for setting the reverb model on the NUX Cerberus pedal
+    Not a full component in itself. Needs to be wrapped in PresetEditor or DirectMenu
     """
     format = "B"
 
