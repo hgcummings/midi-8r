@@ -26,28 +26,12 @@ class PatchEditor(MidiMessageHandler):
         self.current_patch = None
 
         midi.register_handler(self)
-        control.observe_value(self.on_value_change)
-        control.observe_footswitch(self.on_footswitch)
-        control.observe_button_down(self.on_button_down)
-        control.observe_button_up(self.on_button_up)
 
     def on_program_change(self, channel, patch):
         if channel == self.midi_channel:
             self.current_patch = patch
             self.load_patch()
             self.state.set_component(self.menu)
-
-    def on_value_change(self, value):
-        self.state.update_value(value)
-
-    def on_footswitch(self):
-        self.state.switch()
-
-    def on_button_down(self):
-        self.state.button_down()
-
-    def on_button_up(self):
-        self.state.button_up()
 
     def on_save(self):
         self.save_patch()

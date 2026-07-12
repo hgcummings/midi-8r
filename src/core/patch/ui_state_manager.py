@@ -9,6 +9,11 @@ class UiStateManager:
         # External state-holding objects
         self._control = control
         self._display = display
+        
+        control.observe_value(self.update_value)
+        control.observe_footswitch(self.switch)
+        control.observe_button_down(self.button_down)
+        control.observe_button_up(self.button_up)
 
         # Internal state
         self.set_component(initial_component)
