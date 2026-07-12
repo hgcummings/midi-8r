@@ -1,6 +1,6 @@
-class PropertyMenu:
+class PresetMenu:
     """
-    Menu component that supports navigation between multiple property components
+    Menu component that supports navigation between multiple preset components
 
     Display order is determined by components flagging alerts,
     then by the order in which components were initially provided

@@ -2,7 +2,7 @@ import struct
 
 from ports.midi_handler import MidiMessageHandler
 from components.boot_screen import BootScreen
-from components.property_menu import PropertyMenu
+from components.preset_menu import PresetMenu
 from .ui_state_manager import UiStateManager
 
 class PatchEditor(MidiMessageHandler):
@@ -21,7 +21,7 @@ class PatchEditor(MidiMessageHandler):
 
         self.props = properties
 
-        self.menu = PropertyMenu(self.props, self.on_save)
+        self.menu = PresetMenu(self.props, self.on_save)
         self.state = UiStateManager(BootScreen(), control, display)
         self.current_patch = None
 
