@@ -23,6 +23,6 @@ core = PatchEditor(
     midi,
     ControlPanel(ENCODER_PIN_BTN, ENCODER_PIN_CLK, ENCODER_PIN_DT, FOOTSWITCH_PIN),
     display,
-    direct_props(midi),
-    preset_props(midi)
+    direct_params(midi),
+    preset_params(midi)
 )

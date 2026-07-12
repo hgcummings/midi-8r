@@ -10,39 +10,39 @@ class PresetMenu:
     The footswitch is used to acknowledge (and clear) an alert
     from the component currently being displayed
     """
-    def __init__(self, props):
-        self.props = props
-        self.current_prop = 0
+    def __init__(self, params):
+        self.params = params
+        self.current_param = 0
         self.last_selected_prop = 0
 
     def set_nav(self, nav):
         self._nav = nav
 
     def __show_edit(self, display):
-        self.current_prop = self.last_selected_prop
-        for i, prop in enumerate(self.props):
-            if prop.alert:
-                self.current_prop = i
+        self.current_param = self.last_selected_prop
+        for i, param in enumerate(self.params):
+            if param.alert:
+                self.current_param = i
                 break
-        self.props[self.current_prop].show_view(display)
+        self.params[self.current_param].show_view(display)
 
     def switch(self, display):
-        if (self.props[self.current_prop].alert):
-            self.props[self.current_prop].clear_alert()
+        if (self.params[self.current_param].alert):
+            self.params[self.current_param].clear_alert()
             self.__show_edit(display)
-        self.props[self.current_prop].switch(display)
+        self.params[self.current_param].switch(display)
 
     def edit(self, display):
         self.__show_edit(display)
-        return (0, self.current_prop, len(self.props) - 1)
+        return (0, self.current_param, len(self.params) - 1)
 
     def update_value(self, value, display):
         self.last_selected_prop = value
-        self.current_prop = value
-        self.props[self.current_prop].show_view(display)
+        self.current_param = value
+        self.params[self.current_param].show_view(display)
 
     def button_down(self, *_):
         pass
 
     def button_up(self, *_):
-        self._nav.enter(self.props[self.current_prop])
+        self._nav.enter(self.params[self.current_param])

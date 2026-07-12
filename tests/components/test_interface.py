@@ -1,28 +1,57 @@
 from inspect import isclass
-from pkgutil import iter_modules
+from pkgutil import iter_modules, walk_packages
 from pathlib import Path
 from importlib import import_module
-
 import inspect
 
-def has_method(type, method_name):
-    matching_members = [member for name, member in inspect.getmembers(type, inspect.isfunction) if name == method_name]
-    return len(matching_members) == 1
 
-def test_interface():
-    package_dir = Path(__file__.replace("tests", "src")).resolve().parent
-    for (_, module_name, _) in iter_modules([package_dir]):
+def has_method(cls, method_name):
+    return any(
+        name == method_name
+        for name, _ in inspect.getmembers(cls, inspect.isfunction)
+    )
 
-        # import the module and iterate through its attributes
-        module = import_module(f"src.components.{module_name}")
-        for attribute_name in dir(module):
-            attribute = getattr(module, attribute_name)
+def top_level_classes(module_name):
+    module = import_module(module_name)
+    return [
+        attr for attr_name in dir(module)
+        if isclass(attr := getattr(module, attr_name))
+        and attr.__module__ == module_name
+        and '.' not in attr.__qualname__
+    ]
 
-            if isclass(attribute) and attribute.__module__.startswith("src.components"):
-                print(attribute)
-                assert has_method(attribute, "load")
-                assert has_method(attribute, "save")                
-                assert has_method(attribute, "show_view")
-                assert has_method(attribute, "edit")
-                assert has_method(attribute, "update_value")
-                assert has_method(attribute, "switch")
+def components_dir():
+    return Path(__file__.replace("tests", "src")).resolve().parent
+
+
+def test_parameter_interface():
+    params_dir = components_dir() / "params"
+    for (_, name, is_pkg) in walk_packages([str(params_dir)]):
+        if is_pkg:
+            continue
+        module_name = f"src.components.params.{name}"
+        for cls in top_level_classes(module_name):
+            print(cls)
+            assert has_method(cls, "load")
+            assert has_method(cls, "save")
+            assert has_method(cls, "value_range")
+            assert has_method(cls, "update_value")
+            assert has_method(cls, "switch")
+            assert has_method(cls, "has_changed")
+            assert has_method(cls, "render")
+
+
+def test_screen_interface():
+    skip = {"colours"}
+    for (_, name, is_pkg) in iter_modules([str(components_dir())]):
+        if is_pkg or name in skip:
+            continue
+        module_name = f"src.components.{name}"
+        for cls in top_level_classes(module_name):
+            print(cls)
+            assert has_method(cls, "set_nav")
+            assert has_method(cls, "edit")
+            assert has_method(cls, "update_value")
+            assert has_method(cls, "switch")
+            assert has_method(cls, "button_down")
+            assert has_method(cls, "button_up")

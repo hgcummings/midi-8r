@@ -1,0 +1,56 @@
+MIDI_CHANNEL = 0
+MIDI_CC = 71
+
+MODELS = [
+    { 'layout': "1x12", 'character': "Jazz", 'indent_1': 0, 'indent_2': 2 },
+    { 'layout': "1x12", 'character': "Warm", 'indent_1': 0, 'indent_2': 3 },
+    { 'layout': "4x10", 'character': "Bass", 'indent_1': 0, 'indent_2': 0 },
+    { 'layout': "2x12", 'character': "AC30", 'indent_1': 0, 'indent_2': 1 },
+    { 'layout': "2x12", 'character': "Twin", 'indent_1': 0, 'indent_2': 2 },
+    { 'layout': "4x12", 'character': "1960", 'indent_1': 0, 'indent_2': 0 },
+    { 'layout': "4x12", 'character': "GrnBk", 'indent_1': 0, 'indent_2': 0 },
+    { 'layout': "4x12", 'character': "Metal", 'indent_1': 0, 'indent_2': 1 },
+]
+
+class CabSim:
+    """
+    Simple param editor for selecting the cab sim (IR curve) on the NUX Cerberus
+    Not a full component in itself. Needs to be wrapped in PresetEditor or DirectMenu
+    """
+    format = "B"
+
+    def __init__(self, midi_out):
+        self.midi_out = midi_out
+
+    def load(self, data):
+        self.state = data[0]
+        self.saved_state = self.state
+        
+        self.__update_midi()
+
+    def save(self):
+        self.saved_state = self.state
+        return (self.state,)
+
+    def value_range(self):
+        return (0, self.state, len(MODELS) - 1)
+
+    def update_value(self, value):
+        self.state = value
+        self.__update_midi()
+    
+    def switch(self):
+        pass
+
+    def has_changed(self):
+        return self.state != self.saved_state
+    
+    def render(self, display, colour=None):
+        model = MODELS[self.state]
+        display.show_text(model['layout'], line2_text=model['character'],
+            colour=colour,
+            indent=model['indent_1'],
+            line2_indent=model['indent_2'])
+
+    def __update_midi(self):
+        self.midi_out.send_control_change(MIDI_CHANNEL, MIDI_CC, self.state)

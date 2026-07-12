@@ -1,42 +1,42 @@
 from components import colours
 
 class ParameterScreen:
-    def __init__(self, prop):
-        self.format = prop.format
-        self.prop = prop
+    def __init__(self, param):
+        self.format = param.format
+        self.param = param
 
     @property
     def alert(self):
-        return getattr(self.prop, 'alert', False)
+        return getattr(self.param, 'alert', False)
 
     def clear_alert(self):
-        if hasattr(self.prop, 'clear_alert'):
-            self.prop.clear_alert()
+        if hasattr(self.param, 'clear_alert'):
+            self.param.clear_alert()
 
     def load(self, data):
-        self.prop.load(data)
+        self.param.load(data)
 
     def save(self):
-        return self.prop.save()
+        return self.param.save()
 
     def show_view(self, display):
-        self.prop.render(display)
+        self.param.render(display)
 
     def edit(self, display):
-        while getattr(self.prop, 'alert', False):
-            self.prop.clear_alert()
+        while getattr(self.param, 'alert', False):
+            self.param.clear_alert()
         self.__show_edit(display)
-        return self.prop.value_range()
+        return self.param.value_range()
 
     def update_value(self, value, display):
-        self.prop.update_value(value)
+        self.param.update_value(value)
         self.__show_edit(display)
 
     def __show_edit(self, display):
-        self.prop.render(display, colours.MODIFIED if self.prop.has_changed() else colours.SAVED)
+        self.param.render(display, colours.MODIFIED if self.param.has_changed() else colours.SAVED)
 
     def switch(self, display):
-        self.prop.switch()
+        self.param.switch()
         self.__show_edit(display)
 
     def set_nav(self, nav):
@@ -46,7 +46,7 @@ class ParameterScreen:
         pass
 
     def button_up(self, *_):
-        if hasattr(self.prop, 'advance') and self.prop.advance():
+        if hasattr(self.param, 'advance') and self.param.advance():
             self._nav.refresh()
         else:
             self._nav.exit()

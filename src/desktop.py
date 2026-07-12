@@ -30,7 +30,7 @@ else:
         app,
         app,
         Display(app),
-        direct_props(app),
-        preset_props(app))
+        direct_params(app),
+        preset_params(app))
 
 app.show_ui()

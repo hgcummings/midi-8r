@@ -11,13 +11,13 @@ class PatchEditor(MidiMessageHandler):
 
     Responsible for loading and saving patches. Delegates all UI state to Navigator.
     """
-    def __init__(self, storage_root, midi_channel, midi, control, display, direct_props, preset_props):
+    def __init__(self, storage_root, midi_channel, midi, control, display, direct_params, preset_params):
         self.storage_root = storage_root
         self.midi_channel = midi_channel
-        self.props = preset_props
+        self.params = preset_params
 
-        self.menu = PresetMenu(self.props)
-        self.nav = Navigator(DirectMenu(direct_props), control, display, self.save_patch)
+        self.menu = PresetMenu(self.params)
+        self.nav = Navigator(DirectMenu(direct_params), control, display, self.save_patch)
         self.current_patch = None
 
         midi.register_handler(self)
@@ -31,19 +31,19 @@ class PatchEditor(MidiMessageHandler):
     def load_patch(self):
         try:
             with open(self.patch_path(), "rb") as f:
-                for prop in self.props:
-                    prop.load(struct.unpack(prop.format, f.read(struct.calcsize(prop.format))))
+                for param in self.params:
+                    param.load(struct.unpack(param.format, f.read(struct.calcsize(param.format))))
         except (OSError, ValueError):
             with open(self.patch_path(), "wb") as f:
-                for prop in self.props:
-                    empty = bytearray(struct.calcsize(prop.format))
-                    prop.load(struct.unpack(prop.format, empty))
+                for param in self.params:
+                    empty = bytearray(struct.calcsize(param.format))
+                    param.load(struct.unpack(param.format, empty))
                     f.write(empty)
 
     def save_patch(self):
         with open(self.patch_path(), "wb") as f:
-            for prop in self.props:
-                f.write(struct.pack(prop.format, *prop.save()))
+            for param in self.params:
+                f.write(struct.pack(param.format, *param.save()))
 
     def patch_path(self):
         return "{}/patches/{:03d}".format(self.storage_root, self.current_patch)
