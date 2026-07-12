@@ -6,7 +6,7 @@ MAX_PRESET = 24
 
 class M5:
     """
-    Component for selecting the preset on the Line 6 M5 pedal, which supports 24 patches
+    Parameter for selecting the preset on the Line 6 M5 pedal, which supports 24 patches
 
     Footswitch selects whether the M5 effect should be initially on or off whenever this patch is loaded
     """
@@ -27,50 +27,33 @@ class M5:
 
         self.saved_preset = self.preset
         self.saved_init_on = self.init_on
-
         self.__update_midi()
 
-    def show_view(self, display):
-        self.__show_current(display)
-
-    def edit(self, display):
-        self.__show_edit(display)
+    def value_range(self):
         return (MIN_PRESET, self.preset, MAX_PRESET)
 
-    def update_value(self, value, display):
+    def update_value(self, value):
         self.preset = value
-        self.__show_edit(display)
         self.__update_midi()
 
-    def switch(self, display):
+    def switch(self):
         self.init_on = not self.init_on
         self.__update_midi()
-        self.__show_edit(display)
 
-    def set_nav(self, nav):
-        self._nav = nav
+    def has_changed(self):
+        return self.preset != self.saved_preset or self.init_on != self.saved_init_on
 
-    def button_down(self, *_):
-        pass
-
-    def button_up(self, *_):
-        self._nav.exit()
-
-    def save(self):
-        self.saved_preset = self.preset
-        self.saved_init_on = self.init_on
-        return (self.preset * (1 if self.init_on else -1),)
-
-    def __show_edit(self, display):
-        self.__show_current(display,
-            colour=(32,255,32) if self.preset == self.saved_preset and self.init_on == self.saved_init_on else (127,0,0))
-
-    def __show_current(self, display, colour=(255,255,255)):
+    def render(self, display, colour=(255,255,255)):
         display.show_text(
             "P{}".format(self.preset),
             line2_text="(on)" if self.init_on else "(off)",
             line2_indent=1,
             colour=colour)
+
+    def save(self):
+        self.saved_preset = self.preset
+        self.saved_init_on = self.init_on
+        return (self.preset * (1 if self.init_on else -1),)
 
     def __update_midi(self):
         self.midi_out.send_program_change(MIDI_CHANNEL, self.preset - 1)

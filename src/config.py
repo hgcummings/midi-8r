@@ -1,6 +1,6 @@
 import json
 
-from components.props.cerberus import PresetEditor
+from components.parameter_screen import ParameterScreen
 from components.props.cerberus.cab_sim import CabSim
 from components.props.cerberus.reverb import Reverb
 from components.props.cerberus.post_boost import PostBoost
@@ -30,7 +30,7 @@ def direct_props(midi):
 
 def preset_props(midi):
     return [
-        PresetEditor(CabSim(midi)),
-        PresetEditor(Reverb(midi)),
-        Tuning(midi),
-        Guitar(guitars)]
+        ParameterScreen(CabSim(midi)),
+        ParameterScreen(Reverb(midi)),
+        ParameterScreen(Tuning(midi)),
+        ParameterScreen(Guitar(guitars))]

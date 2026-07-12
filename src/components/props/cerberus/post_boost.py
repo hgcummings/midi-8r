@@ -45,7 +45,7 @@ class PostBoost:
     def has_changed(self):
         return self.level != self.saved_level or self.on != self.saved_on
 
-    def show_text(self, display, colour=(255,255,255)):
+    def render(self, display, colour=(255,255,255)):
         display.show_text(
             "{0:.1f}dB".format(6 * self.level / 127),
             line2_text="(on)" if self.on else "(off)",

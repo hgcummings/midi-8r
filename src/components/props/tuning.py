@@ -5,7 +5,7 @@ tunings = ["E std.","drp D"]
 
 class Tuning:
     """
-    Component for selecting the tuning associated with the current patch
+    Parameter for selecting the tuning associated with the current patch
 
     When a patch is first loaded, if the tuning changes, raises an alert and enables the tuner
     """
@@ -13,7 +13,6 @@ class Tuning:
 
     def __init__(self, midi_out):
         self.midi_out = midi_out
-
         self.last_acknowledged_tuning = 0
         self.alert = False
 
@@ -25,9 +24,6 @@ class Tuning:
         elif (self.alert):
             self.clear_alert()
 
-    def show_view(self, display):
-        display.show_text(tunings[self.index])
-
     def _set_alert(self):
         self.alert = True
         self.midi_out.send_control_change(MIDI_CHANNEL, MIDI_CC_TUNER_ON_OFF, 127)
@@ -37,31 +33,22 @@ class Tuning:
         self.last_acknowledged_tuning = self.index
         self.midi_out.send_control_change(MIDI_CHANNEL, MIDI_CC_TUNER_ON_OFF, 0)
 
-    def edit(self, display):
-        self.__show_edit(display)
+    def value_range(self):
         return (0, self.index, len(tunings) - 1)
 
-    def update_value(self, value, display):
+    def update_value(self, value):
         self.index = value
-        self.__show_edit(display)
 
-    def switch(self, *_):
+    def switch(self):
         pass
 
-    def set_nav(self, nav):
-        self._nav = nav
+    def has_changed(self):
+        return self.index != self.saved_index
 
-    def button_down(self, *_):
-        pass
-
-    def button_up(self, *_):
-        self._nav.exit()
+    def render(self, display, colour=(255,255,255)):
+        display.show_text(tunings[self.index], colour=colour)
 
     def save(self):
         self.last_acknowledged_tuning = self.index
         self.saved_index = self.index
         return (self.index,)
-
-    def __show_edit(self, display):
-        display.show_text(tunings[self.index],
-            colour=(32,255,32) if self.index == self.saved_index else (127,0,0))

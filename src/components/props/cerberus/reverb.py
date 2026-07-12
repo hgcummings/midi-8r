@@ -55,7 +55,7 @@ class Reverb:
     def has_changed(self):
         return self.state != self.saved_state
 
-    def show_text(self, display, colour=(255,255,255)):
+    def render(self, display, colour=(255,255,255)):
         display.show_text(NAMES[self.state], colour=colour)
 
     def __set_reverb_type(self, id):

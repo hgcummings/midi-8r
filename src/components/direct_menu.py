@@ -25,7 +25,7 @@ class DirectMenu:
         self.__show_edit(display)
 
     def __show_edit(self, display):
-        self.props[self.current_prop].show_text(display, (255,127,0))
+        self.props[self.current_prop].render(display, (255,127,0))
 
     def switch(self, display):
         self.props[self.current_prop].switch()

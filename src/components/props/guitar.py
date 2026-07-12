@@ -1,8 +1,13 @@
 class Guitar:
     """
-    Component for selecting the guitar (and pickup) used with this patch
+    Parameter for selecting the guitar (and pickup) used with this patch
 
-    When a patch is first loaded, if the guitar/pickup changes, raises an alert
+    Raises an alert on load if the guitar or pickup has changed:
+    - If the guitar changed, shows the guitar name first (footswitch to acknowledge),
+      then the pickup selection (footswitch to clear), unless there is only one pickup
+    - If only the pickup changed, shows the pickup selection directly (footswitch to clear)
+
+    Two-step editing via advance(): first selects the guitar, then the pickup.
     """
     format = "BB"
 
@@ -11,6 +16,7 @@ class Guitar:
         self.default = (1, guitars[1]["default"])
         self.last_acknowledged = self.default
         self.alert = False
+        self._guitar_alert = False
         self.pickup_image = Guitar.PickupImage(guitars)
 
     def load(self, data):
@@ -26,11 +32,59 @@ class Guitar:
         elif (self.alert):
             self.clear_alert()
 
-    def show_view(self, display):
-        if (len(self.__pickups()) == 1 or (self.alert and self.last_acknowledged[0] != self.guitar)):
-            display.show_text(self.guitars[self.guitar]["name"])
+    def _set_alert(self):
+        self.alert = True
+        self._guitar_alert = self.last_acknowledged[0] != self.guitar
+
+    def clear_alert(self):
+        if self._guitar_alert:
+            self._guitar_alert = False
+            if len(self.__pickups()) > 1:
+                return  # stay in alert mode to show pickup next
+        self.alert = False
+        self.last_acknowledged = (self.guitar, self.pickup)
+
+    def value_range(self):
+        if self.edit_pickup:
+            return (0, self.pickup, len(self.__pickups()) - 1)
         else:
+            return (1, self.guitar, len(self.guitars) - 1)
+
+    def update_value(self, value):
+        if self.edit_pickup:
+            self.pickup = value
+        else:
+            self.guitar = value
+            self.pickup = self.guitars[self.guitar]["default"]
+
+    def switch(self):
+        pass
+
+    def advance(self):
+        if self.edit_pickup or len(self.__pickups()) == 1:
+            self.edit_pickup = False
+            return False
+        else:
+            self.edit_pickup = True
+            return True
+
+    def has_changed(self):
+        return self.saved != (self.guitar, self.pickup)
+
+    def render(self, display, colour=(255,255,255)):
+        if self.alert and self._guitar_alert:
+            display.show_text(self.guitars[self.guitar]["name"])
+        elif self.alert:
             self.__show_pickup(display)
+        elif self.edit_pickup:
+            self.__show_pickup(display, colour=colour)
+        else:
+            display.show_text(self.guitars[self.guitar]["name"], colour=colour)
+
+    def save(self):
+        self.saved = (self.guitar, self.pickup)
+        self.last_acknowledged = self.saved
+        return self.saved
 
     def __guitar(self):
         return self.guitars[self.guitar]
@@ -38,56 +92,8 @@ class Guitar:
     def __pickups(self):
         return self.__guitar()["pickups"]
 
-    def _set_alert(self):
-        self.alert = True
-
-    def clear_alert(self):
-        self.alert = False
-        self.last_acknowledged = (self.guitar, self.pickup)
-
-    def edit(self, display):
-        self.__show_edit(display)
-        return (0, self.pickup, len(self.__pickups()) - 1) if self.edit_pickup else (1, self.guitar, len(self.guitars) - 1)
-
-    def update_value(self, value, display):
-        if (self.edit_pickup):
-            self.pickup = value
-        else:
-            self.guitar = value
-            self.pickup = self.guitars[self.guitar]["default"]
-        self.__show_edit(display)
-
-    def switch(self, *_):
-        pass
-
-    def set_nav(self, nav):
-        self._nav = nav
-
-    def button_down(self, *_):
-        pass
-
-    def button_up(self, *_):
-        if self.edit_pickup or len(self.__pickups()) == 1:
-            self._nav.exit()
-        else:
-            self.edit_pickup = True
-            self._nav.refresh()
-
-    def save(self):
-        self.saved = (self.guitar, self.pickup)
-        self.last_acknowledged = self.saved
-        return self.saved
-
-    def __show_edit(self, display):
-        colour = (32,255,32) if self.saved == (self.guitar, self.pickup) else (127,0,0)
-        if self.edit_pickup:
-            self.__show_pickup(display, colour=colour)
-        else:
-            display.show_text(self.guitars[self.guitar]["name"],colour=colour)
-
     def __show_pickup(self, display, colour=(255,255,255)):
         self.pickup_image.set(self.guitar, self.pickup, colour)
-
         display.show_image(
             self.pickup_image.width(),
             self.pickup_image.height(),

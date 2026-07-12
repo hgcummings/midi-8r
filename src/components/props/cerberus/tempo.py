@@ -6,71 +6,51 @@ MIDI_CC_DATA_MSB = 6
 
 class Tempo:
     """
-    Component for setting the tempo on the Nux Cerberus
-    Does _not_ automatically set the tempo on load but sets it on pressing the footswitch
-    To set the tempo on load, save it to the Cerberus preset
+    Parameter for setting the tempo on the Nux Cerberus
+
+    Does _not_ automatically set the tempo on load but sets it on pressing the footswitch.
+    To set the tempo on load, save it to the Cerberus preset.
     """
     format = "H"
+    alert = False
 
     def __init__(self, midi_out):
         self.midi_out = midi_out
-        self.alert = False
 
     def load(self, data):
         self.applied = False
-        self.in_edit = False
         if (data[0] == 0):
             # No patch saved; loaded empty data
             self.bpm = 120
         else:
             self.bpm = data[0]
-
         self.saved_bpm = self.bpm
 
-    def save(self):
-        self.in_edit = False
-        self.saved_bpm = self.bpm
-        return (self.bpm,)
-
-    def show_view(self, display):
-        self.__show_current(display, colour=((255,255,255) if self.applied else (64,64,64)))
-
-    def edit(self, display):
-        self.in_edit = True
-        self.__show_edit(display)
+    def value_range(self):
         return (40, self.bpm, 480)
 
-    def update_value(self, value, display):
+    def update_value(self, value):
         self.bpm = value
         self.__update_midi()
-        self.__show_edit(display)
 
-    def switch(self, display):
+    def switch(self):
         self.__update_midi()
-        if (self.in_edit):
-            self.__show_edit(display)
-        else:
-            self.show_view(display)
 
-    def set_nav(self, nav):
-        self._nav = nav
+    def has_changed(self):
+        return self.bpm != self.saved_bpm
 
-    def button_down(self, *_):
-        pass
-
-    def button_up(self, *_):
-        self._nav.exit()
-
-    def __show_edit(self, display):
-        self.__show_current(display,
-            colour=(32,255,32) if self.bpm == self.saved_bpm else (127,0,0))
-
-    def __show_current(self, display, colour=(255,255,255)):
+    def render(self, display, colour=None):
+        if colour is None:
+            colour = (255,255,255) if self.applied else (64,64,64)
         display.show_text(
             str(self.bpm),
             line2_text="BPM",
             colour=colour,
             line2_indent=5)
+
+    def save(self):
+        self.saved_bpm = self.bpm
+        return (self.bpm,)
 
     def __update_midi(self):
         self.applied = True

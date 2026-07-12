@@ -45,7 +45,7 @@ class CabSim:
     def has_changed(self):
         return self.state != self.saved_state
     
-    def show_text(self, display, colour=(255,255,255)):
+    def render(self, display, colour=(255,255,255)):
         model = MODELS[self.state]
         display.show_text(model['layout'], line2_text=model['character'],
             colour=colour,
