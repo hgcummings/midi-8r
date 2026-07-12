@@ -14,7 +14,7 @@ class DirectMenu:
         self.switching_params = False
 
         for param in params:
-            param.load([0])
+            load_empty(param)
 
     def set_nav(self, nav):
         self._nav = nav

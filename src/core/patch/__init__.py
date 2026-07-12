@@ -3,6 +3,7 @@ import struct
 from ports.midi_handler import MidiMessageHandler
 from components.direct_menu import DirectMenu
 from components.preset_menu import PresetMenu
+from components.params import load_empty
 from .navigator import Navigator
 
 class PatchEditor(MidiMessageHandler):
@@ -36,9 +37,7 @@ class PatchEditor(MidiMessageHandler):
         except (OSError, ValueError):
             with open(self.patch_path(), "wb") as f:
                 for param in self.params:
-                    empty = bytearray(struct.calcsize(param.format))
-                    param.load(struct.unpack(param.format, empty))
-                    f.write(empty)
+                    f.write(load_empty(param))
 
     def save_patch(self):
         with open(self.patch_path(), "wb") as f:
