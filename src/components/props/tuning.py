@@ -48,21 +48,20 @@ class Tuning:
     def switch(self, *_):
         pass
 
-    def observe_next(self, next_observer):
-        self._next_observer = next_observer
+    def set_nav(self, nav):
+        self._nav = nav
 
     def button_down(self, *_):
         pass
 
     def button_up(self, *_):
-        self._next_observer(self.parent)
-        self.parent.on_save()
+        self._nav.exit()
 
     def save(self):
         self.last_acknowledged_tuning = self.index
         self.saved_index = self.index
         return (self.index,)
-        
+
     def __show_edit(self, display):
         display.show_text(tunings[self.index],
             colour=(32,255,32) if self.index == self.saved_index else (127,0,0))

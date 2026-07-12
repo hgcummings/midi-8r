@@ -1,7 +1,7 @@
 class Component:
     """
     Define the byte structure for storing this component's data.
-    
+
     See https://docs.python.org/3/library/struct.html
     """
     format = "B"
@@ -28,9 +28,9 @@ class Component:
         """
         return (self.state,)
 
-    def observe_next(self, next_observer):
-        self._next_observer = next_observer
-    
+    def set_nav(self, nav):
+        self._nav = nav
+
     def edit(self, display):
         """
         Display this component's state in edit mode.
@@ -54,7 +54,7 @@ class Component:
         """
         self.state = 255 - self.state
         self.__show_edit(display)
-    
+
     def __show_edit(self, display):
         display.show_text(str(self.state),
             colour=(32,255,32) if self.state == self.saved_state else (127,0,0))

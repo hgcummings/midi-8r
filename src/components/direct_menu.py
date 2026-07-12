@@ -7,16 +7,16 @@ class DirectMenu:
         for prop in props:
             prop.load([0])
 
-    def observe_next(self, next_observer):
-        self._next_observer = next_observer
-    
+    def set_nav(self, nav):
+        self._nav = nav
+
     def edit(self, display):
         self.__show_edit(display)
         if self.switching_props:
             return (0, self.current_prop, len(self.props) - 1)
         else:
             return self.props[self.current_prop].value_range()
-    
+
     def update_value(self, value, display):
         if (self.switching_props):
             self.current_prop = value
@@ -30,11 +30,11 @@ class DirectMenu:
     def switch(self, display):
         self.props[self.current_prop].switch()
         self.__show_edit(display)
-    
+
     def button_down(self, *_):
         self.switching_props = True
-        self._next_observer(self)
+        self._nav.refresh()
 
-    def button_up(self, display):
+    def button_up(self, *_):
         self.switching_props = False
-        self._next_observer(self)
+        self._nav.refresh()

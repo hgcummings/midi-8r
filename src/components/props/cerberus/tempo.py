@@ -4,8 +4,6 @@ MIDI_CC_NRPN_MSB = 99
 MIDI_CC_DATA_LSB = 38
 MIDI_CC_DATA_MSB = 6
 
-MODELS = ["J120","D112","B410","A212","T212","1960","G412","V412"]
-
 class Tempo:
     """
     Component for setting the tempo on the Nux Cerberus
@@ -54,16 +52,15 @@ class Tempo:
         else:
             self.show_view(display)
 
-    def observe_next(self, next_observer):
-        self._next_observer = next_observer
+    def set_nav(self, nav):
+        self._nav = nav
 
     def button_down(self, *_):
         pass
 
     def button_up(self, *_):
-        self._next_observer(self.parent)
-        self.parent.on_save()
-    
+        self._nav.exit()
+
     def __show_edit(self, display):
         self.__show_current(display,
             colour=(32,255,32) if self.bpm == self.saved_bpm else (127,0,0))
@@ -82,4 +79,3 @@ class Tempo:
         self.midi_out.send_control_change(MIDI_CHANNEL, MIDI_CC_NRPN_MSB, 38)
         self.midi_out.send_control_change(MIDI_CHANNEL, MIDI_CC_DATA_MSB, value14 >> 7)
         self.midi_out.send_control_change(MIDI_CHANNEL, MIDI_CC_DATA_LSB, value14 & 0x7f)
-

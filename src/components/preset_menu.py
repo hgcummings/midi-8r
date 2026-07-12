@@ -10,14 +10,13 @@ class PresetMenu:
     The footswitch is used to acknowledge (and clear) an alert
     from the component currently being displayed
     """
-    def __init__(self, props, on_save):
+    def __init__(self, props):
         self.props = props
         self.current_prop = 0
         self.last_selected_prop = 0
-        self.on_save = on_save
 
-        for prop in self.props:
-            prop.parent = self
+    def set_nav(self, nav):
+        self._nav = nav
 
     def __show_edit(self, display):
         self.current_prop = self.last_selected_prop
@@ -45,8 +44,5 @@ class PresetMenu:
     def button_down(self, *_):
         pass
 
-    def button_up(self, display):
-        self._next_observer(self.props[self.current_prop])
-
-    def observe_next(self, next_observer):
-        self._next_observer = next_observer
+    def button_up(self, *_):
+        self._nav.enter(self.props[self.current_prop])

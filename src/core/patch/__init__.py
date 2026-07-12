@@ -3,26 +3,21 @@ import struct
 from ports.midi_handler import MidiMessageHandler
 from components.direct_menu import DirectMenu
 from components.preset_menu import PresetMenu
-from .ui_state_manager import UiStateManager
+from .navigator import Navigator
 
 class PatchEditor(MidiMessageHandler):
     """
     Core for working with patches
 
-    Responsible for loading and saving patches. All other mutable state is
-    controlled via the `ui_state_manager.UiStateManager`
-
-    Delegates to `components` for showing or editing parameters,
-    passing through events from the control panel to enable this
+    Responsible for loading and saving patches. Delegates all UI state to Navigator.
     """
     def __init__(self, storage_root, midi_channel, midi, control, display, direct_props, preset_props):
         self.storage_root = storage_root
         self.midi_channel = midi_channel
-
         self.props = preset_props
 
-        self.menu = PresetMenu(self.props, self.on_save)
-        self.state = UiStateManager(DirectMenu(direct_props), control, display)
+        self.menu = PresetMenu(self.props)
+        self.nav = Navigator(DirectMenu(direct_props), control, display, self.save_patch)
         self.current_patch = None
 
         midi.register_handler(self)
@@ -31,10 +26,7 @@ class PatchEditor(MidiMessageHandler):
         if channel == self.midi_channel:
             self.current_patch = patch
             self.load_patch()
-            self.state.set_component(self.menu)
-
-    def on_save(self):
-        self.save_patch()
+            self.nav.set_component(self.menu)
 
     def load_patch(self):
         try:
