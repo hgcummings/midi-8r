@@ -1,3 +1,5 @@
+from components import colours
+
 class ParameterScreen:
     def __init__(self, prop):
         self.format = prop.format
@@ -21,6 +23,8 @@ class ParameterScreen:
         self.prop.render(display)
 
     def edit(self, display):
+        while getattr(self.prop, 'alert', False):
+            self.prop.clear_alert()
         self.__show_edit(display)
         return self.prop.value_range()
 
@@ -29,7 +33,7 @@ class ParameterScreen:
         self.__show_edit(display)
 
     def __show_edit(self, display):
-        self.prop.render(display, (127,0,0) if self.prop.has_changed() else (32,255,32))
+        self.prop.render(display, colours.MODIFIED if self.prop.has_changed() else colours.SAVED)
 
     def switch(self, display):
         self.prop.switch()

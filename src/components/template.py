@@ -1,3 +1,5 @@
+from components import colours
+
 class Component:
     """
     Define the byte structure for storing this component's data.
@@ -57,4 +59,4 @@ class Component:
 
     def __show_edit(self, display):
         display.show_text(str(self.state),
-            colour=(32,255,32) if self.state == self.saved_state else (127,0,0))
+            colour=colours.SAVED if self.state == self.saved_state else colours.CHANGED)

@@ -1,3 +1,5 @@
+from components import colours
+
 MIDI_CHANNEL = 0
 MIDI_CC_NRPN_LSB = 98
 MIDI_CC_NRPN_MSB = 99
@@ -41,7 +43,7 @@ class Tempo:
 
     def render(self, display, colour=None):
         if colour is None:
-            colour = (255,255,255) if self.applied else (64,64,64)
+            colour = colours.VIEW if self.applied else colours.PENDING
         display.show_text(
             str(self.bpm),
             line2_text="BPM",

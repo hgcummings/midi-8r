@@ -8,7 +8,9 @@ class Display:
         self.pixel_display.clear_buffer()
         self.pixel_display.show_buffer()
 
-    def show_text(self, text, line2_text=None, colour=(255,255,255), indent=0, line2_indent=0):
+    def show_text(self, text, line2_text=None, colour=None, indent=0, line2_indent=0):
+        if colour is None:
+            colour = (255, 255, 255)
         self.pixel_display.clear_buffer()
         if line2_text:
             render_line(self.pixel_display, indent, 0, text, colour)

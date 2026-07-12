@@ -1,3 +1,5 @@
+from components import colours
+
 class DirectMenu:
     def __init__(self, props):
         self.props = props
@@ -25,7 +27,7 @@ class DirectMenu:
         self.__show_edit(display)
 
     def __show_edit(self, display):
-        self.props[self.current_prop].render(display, (255,127,0))
+        self.props[self.current_prop].render(display, colours.REHEARSAL)
 
     def switch(self, display):
         self.props[self.current_prop].switch()
