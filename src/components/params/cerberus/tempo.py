@@ -14,7 +14,6 @@ class Tempo:
     To set the tempo on load, save it to the Cerberus preset.
     """
     format = "H"
-    alert = False
 
     def __init__(self, midi_out):
         self.midi_out = midi_out
