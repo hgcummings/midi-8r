@@ -19,7 +19,6 @@ class Reverb:
 
     def __init__(self, midi_out):
         self.midi_out = midi_out
-        self.alert = False
 
     def load(self, data):
         self.state = data[0]
@@ -44,37 +43,21 @@ class Reverb:
         self.saved_state = self.state
         return (self.state,)
 
-    def show_view(self, display):
-        display.show_text(NAMES[self.state])
-
-    def clear_alert(self):
-        self.alert = False
-
-    def edit(self, display):
-        self.__show_edit(display)
+    def value_range(self):
         return (0, self.state, 3)
 
-    def update_value(self, value, display):
+    def update_value(self, value):
         self.state = value
         self.__set_reverb_type(self.state)
-        self.__show_edit(display)
 
     def switch(self, display):
         pass
-
-    def observe_next(self, next_observer):
-        self._next_observer = next_observer
-
-    def button_down(self, *_):
-        pass
-
-    def button_up(self, *_):
-        self._next_observer(self.parent)
-        self.parent.on_save()
     
-    def __show_edit(self, display):
-        display.show_text(NAMES[self.state],
-            colour=(32,255,32) if self.state == self.saved_state else (127,0,0))
+    def has_changed(self):
+        return self.state != self.saved_state
+
+    def show_text(self, display, colour=(255,255,255)):
+        display.show_text(NAMES[self.state], colour=colour)
 
     def __set_reverb_type(self, id):
         self.midi_out.send_control_change(1, MIDI_CC_REVERB, id)

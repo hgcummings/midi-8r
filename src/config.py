@@ -1,5 +1,6 @@
 import json
 
+from components.props.cerberus import PresetEditor
 from components.props.cerberus.cab_sim import CabSim
 from components.props.cerberus.reverb import Reverb
 from components.props.tuning import Tuning
@@ -20,4 +21,8 @@ with open(__file__.replace("config.py", "guitars.json"), encoding="utf8") as f:
     guitars = json.load(f)
 
 def init_components(midi):
-    return [CabSim(midi), Reverb(midi), Tuning(midi), Guitar(guitars)]
+    return [
+        PresetEditor(CabSim(midi)),
+        PresetEditor(Reverb(midi)),
+        Tuning(midi),
+        Guitar(guitars)]

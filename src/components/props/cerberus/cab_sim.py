@@ -20,7 +20,6 @@ class CabSim:
 
     def __init__(self, midi_out):
         self.midi_out = midi_out
-        self.alert = False
 
     def load(self, data):
         self.state = data[0]
@@ -32,35 +31,20 @@ class CabSim:
         self.saved_state = self.state
         return (self.state,)
 
-    def show_view(self, display):
-        self.__show_text(display)
-
-    def edit(self, display):
-        self.__show_edit(display)
+    def value_range(self):
         return (0, self.state, len(MODELS) - 1)
 
-    def update_value(self, value, display):
+    def update_value(self, value):
         self.state = value
         self.__update_midi()
-        self.__show_edit(display)
-
-    def switch(self, display):
-        return None
-
-    def observe_next(self, next_observer):
-        self._next_observer = next_observer
-
-    def button_down(self, *_):
+    
+    def switch(self):
         pass
 
-    def button_up(self, *_):
-        self._next_observer(self.parent)
-        self.parent.on_save()
+    def has_changed(self):
+        return self.state != self.saved_state
     
-    def __show_edit(self, display):
-        self.__show_text(display, (32,255,32) if self.state == self.saved_state else (127,0,0))
-    
-    def __show_text(self, display, colour=(255,255,255)):
+    def show_text(self, display, colour=(255,255,255)):
         model = MODELS[self.state]
         display.show_text(model['layout'], line2_text=model['character'],
             colour=colour,

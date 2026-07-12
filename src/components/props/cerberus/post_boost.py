@@ -7,7 +7,6 @@ class PostBoost:
     Component for setting the post-volume boost on the NUX Cerberus pedal
     """
     format = "b"
-    alert = False
 
     def __init__(self, midi_out):
         self.midi_out = midi_out
@@ -26,43 +25,26 @@ class PostBoost:
 
         self.__update_midi()
 
-    def show_view(self, display):
-        self.__show_current(display)
-
-    def edit(self, display):
-        self.__show_edit(display)
+    def value_range(self):
         return (0, self.level, 127)
 
-    def update_value(self, value, display):
+    def update_value(self, value):
         self.level = value
-        self.__show_edit(display)
         self.__update_midi()
 
-    def switch(self, display):
+    def switch(self):
         self.on = not self.on
         self.__update_midi()
-        self.__show_edit(display)
-
-    def observe_next(self, next_observer):
-        self._next_observer = next_observer
-
-    def button_down(self, *_):
-        pass
-
-    def button_up(self, *_):
-        self._next_observer(self.parent)
-        self.parent.on_save()
 
     def save(self):
         self.saved_level = self.level
         self.saved_on = self.on
         return (self.level * (1 if self.on else -1),)
 
-    def __show_edit(self, display):
-        self.__show_current(display,
-            colour=(32,255,32) if self.level == self.saved_level and self.on == self.saved_on else (127,0,0))
+    def has_changed():
+        return self.level != self.saved_level or self.on != self.saved_on
 
-    def __show_current(self, display, colour=(255,255,255)):
+    def show_text(self, display, colour=(255,255,255)):
         display.show_text(
             "{0:.1f}dB".format(6 * self.level / 127),
             line2_text="(on)" if self.on else "(off)",
