@@ -1,3 +1,5 @@
+from .parameter_screen import ParameterScreen
+
 class PresetMenu:
     """
     Screen for navigating between the preset parameters
@@ -11,7 +13,7 @@ class PresetMenu:
     from the parameter currently being displayed
     """
     def __init__(self, params):
-        self.params = params
+        self.params = [ParameterScreen(param) for param in params]
         self.current_param = 0
         self.last_selected_param = 0
 

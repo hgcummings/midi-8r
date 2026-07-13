@@ -13,12 +13,6 @@ class ParameterScreen:
         if hasattr(self.param, 'clear_alert'):
             self.param.clear_alert()
 
-    def load(self, data):
-        self.param.load(data)
-
-    def save(self):
-        return self.param.save()
-
     def render_view(self, display):
         self.param.render(display)
 
