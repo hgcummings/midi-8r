@@ -1,8 +1,8 @@
 import struct
 
 from ports.midi_handler import MidiMessageHandler
-from components.direct_menu import DirectMenu
-from components.preset_menu import PresetMenu
+from components.screens.direct_menu import DirectMenu
+from components.screens.preset_menu import PresetMenu
 from components.params import load_empty
 from .navigator import Navigator
 

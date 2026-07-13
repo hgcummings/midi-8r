@@ -4,7 +4,6 @@ from pathlib import Path
 from importlib import import_module
 import inspect
 
-
 def has_method(cls, method_name):
     return any(
         name == method_name
@@ -19,10 +18,6 @@ def top_level_classes(module_name):
         and attr.__module__ == module_name
         and '.' not in attr.__qualname__
     ]
-
-def components_dir():
-    return Path(__file__.replace("tests", "src")).resolve().parent
-
 
 def test_parameter_interface():
     params_pkg = import_module("src.components.params")
@@ -41,12 +36,11 @@ def test_parameter_interface():
 
 
 def test_screen_interface():
-    skip = {"colours"}
-    for (_, name, is_pkg) in iter_modules([str(components_dir())]):
-        if is_pkg or name in skip:
+    screens_pkg = import_module("src.components.screens")
+    for (_, name, is_pkg) in walk_packages(screens_pkg.__path__, prefix=screens_pkg.__name__ + '.'):
+        if is_pkg:
             continue
-        module_name = f"src.components.{name}"
-        for cls in top_level_classes(module_name):
+        for cls in top_level_classes(name):
             print(cls)
             assert has_method(cls, "set_nav")
             assert has_method(cls, "activate")
