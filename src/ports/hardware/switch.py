@@ -1,7 +1,7 @@
 from machine import Pin, Timer
 
 class DebouncedMomentarySwitch:
-    def __init__(self, pin, down_callback, up_callback=None):
+    def __init__(self, pin, up_callback, down_callback=None):
         self._pin = Pin(pin, Pin.IN, Pin.PULL_UP)
         self._pin.irq(self.__on_change, Pin.IRQ_FALLING | Pin.IRQ_RISING)
         self._timer = Timer(-1)
@@ -18,5 +18,5 @@ class DebouncedMomentarySwitch:
             self._value = new_value
             if (new_value == 0):
                 self._callback()
-            else if (self._up_callback):
+            elif (self._up_callback):
                 self._up_callback()
