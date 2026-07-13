@@ -23,18 +23,18 @@ class Diagnostic(MidiMessageHandler):
         self.output_patch = None
         self.midi.register_handler(self)
 
-        self.control.observe_value(self.on_value_change)
-        self.control.observe_button_up(self.on_button)
+        self.control.observe_value(self.__on_value_change)
+        self.control.observe_button_up(self.__on_button)
 
         self.control.set_range_and_value(0, 0, OUTPUT_PATCH_RANGE - 1)
 
     def on_program_change(self, channel, patch):
         if channel == MIDI_CHANNEL:
             preset = self.storage.get_preset(patch)
-            self.update_patches(patch, preset)
+            self.__update_patches(patch, preset)
             self.control.set_value(preset)
 
-    def update_patches(self, input_patch, output_patch):
+    def __update_patches(self, input_patch, output_patch):
         changed = False
 
         if (input_patch != self.input_patch):
@@ -50,14 +50,14 @@ class Diagnostic(MidiMessageHandler):
         if changed:
             self.__show_patches(self.output_patch == self.storage.get_preset(self.input_patch))
 
-    def on_button(self):
+    def __on_button(self):
         if (self.input_patch is not None):
             self.storage.set_preset(self.input_patch, self.output_patch)
             self.__show_patches(True)
 
-    def on_value_change(self, value):
+    def __on_value_change(self, value):
         if (self.input_patch is not None):
-            self.update_patches(self.input_patch, value)
+            self.__update_patches(self.input_patch, value)
 
     def __show_patches(self, saved):
         self.display.show_text(

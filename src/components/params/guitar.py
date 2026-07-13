@@ -28,11 +28,11 @@ class Guitar:
         self.saved = (self.guitar, self.pickup)
         self.edit_pickup = False
         if (self.saved != self.last_acknowledged):
-            self._set_alert()
+            self.__set_alert()
         elif (self.alert):
             self.clear_alert()
 
-    def _set_alert(self):
+    def __set_alert(self):
         self.alert = True
         self._guitar_alert = self.last_acknowledged[0] != self.guitar
 
@@ -103,16 +103,16 @@ class Guitar:
         _bg_col = (0,0,0)
 
         def __init__(self, guitars):
-            self._row_buf = [self._bg_col] * (max(map(self._guitar_width, guitars[1:])) + 1)
+            self._row_buf = [self._bg_col] * (max(map(self.__guitar_width, guitars[1:])) + 1)
             self._guitars = guitars
             self._guitar = 0
             self._pickup = 0
 
-        def _guitar_width(self, guitar):
+        def __guitar_width(self, guitar):
             return guitar["pickups"][-1][-1] + 1
 
         def width(self):
-            return self._guitar_width(self._guitar)
+            return self.__guitar_width(self._guitar)
 
         def height(self):
             return self._guitar["strings"]

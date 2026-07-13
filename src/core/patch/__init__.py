@@ -17,8 +17,8 @@ class PatchEditor(MidiMessageHandler):
         self.midi_channel = midi_channel
         self.params = preset_params
 
-        self.menu = PresetMenu(self.params)
-        self.nav = Navigator(DirectMenu(direct_params), control, display, self.save_patch)
+        self.preset_menu = PresetMenu(self.params)
+        self.nav = Navigator(DirectMenu(direct_params), control, display, self.__save_patch)
         self.current_patch = None
 
         midi.register_handler(self)
@@ -26,23 +26,23 @@ class PatchEditor(MidiMessageHandler):
     def on_program_change(self, channel, patch):
         if channel == self.midi_channel:
             self.current_patch = patch
-            self.load_patch()
-            self.nav.set_screen(self.menu)
+            self.__load_patch()
+            self.nav.set_screen(self.preset_menu)
 
-    def load_patch(self):
+    def __load_patch(self):
         try:
-            with open(self.patch_path(), "rb") as f:
+            with open(self.__patch_path(), "rb") as f:
                 for param in self.params:
                     param.load(struct.unpack(param.format, f.read(struct.calcsize(param.format))))
         except (OSError, ValueError):
-            with open(self.patch_path(), "wb") as f:
+            with open(self.__patch_path(), "wb") as f:
                 for param in self.params:
                     f.write(load_empty(param))
 
-    def save_patch(self):
-        with open(self.patch_path(), "wb") as f:
+    def __save_patch(self):
+        with open(self.__patch_path(), "wb") as f:
             for param in self.params:
                 f.write(struct.pack(param.format, *param.save()))
 
-    def patch_path(self):
+    def __patch_path(self):
         return "{}/patches/{:03d}".format(self.storage_root, self.current_patch)

@@ -13,10 +13,10 @@ class Navigator:
         self._current = None
         self._previous = None
 
-        control.observe_value(self._on_value)
-        control.observe_footswitch(self._on_switch)
-        control.observe_button_down(self._on_button_down)
-        control.observe_button_up(self._on_button_up)
+        control.observe_value(self.__on_value)
+        control.observe_footswitch(self.__on_switch)
+        control.observe_button_down(self.__on_button_down)
+        control.observe_button_up(self.__on_button_up)
 
         self.set_screen(initial_screen)
 
@@ -34,33 +34,33 @@ class Navigator:
         """Replace the current screen. Called by PatchEditor on program change."""
         self._previous = None
         self._current = screen
-        self._activate(screen)
+        self.__activate(screen)
 
     def enter(self, screen):
         self._previous = self._current
         self._current = screen
-        self._activate(screen)
+        self.__activate(screen)
 
     def exit(self):
         self._current = self._previous
         self._previous = None
-        self._activate(self._current)
+        self.__activate(self._current)
         self._on_save()
 
     def refresh(self):
-        self._activate(self._current)
+        self.__activate(self._current)
 
-    def _activate(self, screen):
+    def __activate(self, screen):
         self._control.set_range_and_value(*screen.activate(self._display))
 
-    def _on_value(self, value):
+    def __on_value(self, value):
         self._current.update_value(value, self._display)
 
-    def _on_switch(self):
+    def __on_switch(self):
         self._current.switch(self._display)
 
-    def _on_button_down(self):
+    def __on_button_down(self):
         self._current.button_down(self._display)
 
-    def _on_button_up(self):
+    def __on_button_up(self):
         self._current.button_up(self._display)

@@ -20,11 +20,11 @@ class Tuning:
         self.index = data[0]
         self.saved_index = self.index
         if (self.index != self.last_acknowledged_tuning):
-            self._set_alert()
+            self.__set_alert()
         elif (self.alert):
             self.clear_alert()
 
-    def _set_alert(self):
+    def __set_alert(self):
         self.alert = True
         self.midi_out.send_control_change(MIDI_CHANNEL, MIDI_CC_TUNER_ON_OFF, 127)
 

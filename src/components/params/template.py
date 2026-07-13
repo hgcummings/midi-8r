@@ -1,7 +1,9 @@
 class Parameter:
     """
     Template for implementing a parameter — a single editable value stored per patch.
+    """
 
+    """
     Define the byte structure for storing this parameter's data.
     See https://docs.python.org/3/library/struct.html
     """
@@ -53,9 +55,9 @@ class Parameter:
 
     # Optional: implement alert and clear_alert() for changes requiring
     # user intervention. Set self.alert = True in load() to flag an alert.
-    # ParameterScreen will step through clear_alert() calls on edit entry.
     # PresetMenu will prioritise this parameter in its display while alert is set,
     # and clear_alert() will be called once per footswitch press.
+    # All alerts will also be cleared on entering edit mode.
     #
     # def clear_alert(self):
     #     self.alert = False
